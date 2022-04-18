@@ -23,7 +23,9 @@ class Game:
 
     @staticmethod
     def draw():
-        Game.screen.fill((255, 255, 255))
+        Game.screen.fill((0, 0, 0))
+
+        pg.display.update()
 
 
 # On start
