@@ -1,12 +1,12 @@
 import pygame as pg
 
+screen_width = 800
+screen_height = 800
 
 class Game:
     clock = pg.time.Clock()
     run = True
     game_over = False
-    screen_width = 800
-    screen_height = 800
     screen = pg.display.set_mode((screen_width, screen_height))
 
     @staticmethod
