@@ -7,8 +7,8 @@ class Asteroid:
     def __init__(self, rank, screen_width, screen_height):  # rank - размер астероида
         self.rank = rank
         self.texture = self._rank_to_texture(rank)
-        self.width = 50 * rank
-        self.height = 50 * rank
+        self.width = self.texture.get_width()
+        self.height = self.texture.get_height()
         self.spawn_point = random.choice(
             [(random.randrange(0, screen_width - self.width),
               random.choice([-1 * self.height - 5, screen_height + 5])),
