@@ -42,6 +42,6 @@ class Player:
                      self.y - self.sine * self.height // 2)
 
     def move_forward(self):
-        self.x += aaaaaaaaaaaaaaaaaaaaaadself.cosine * 6
+        self.x += self.cosine * 6
         self.y -= self.sine * 6
         self.update()
