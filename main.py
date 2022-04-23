@@ -42,6 +42,8 @@ class Game:
 
     @staticmethod
     def update():
+        Game.player.update()
+        Game.loop_screen()
         Game.move_asteroids()
         Game.handle_events()
 
@@ -87,6 +89,19 @@ class Game:
                 if event.key == pg.K_SPACE:
                     if not Game.game_over:
                         Game.player_bullets.append(Bullet(Game.player))
+
+    @staticmethod
+    def loop_screen():
+        if Game.player.position.x > screen_width + Game.player.height:
+            Game.player.position.x = -Game.player.height
+        elif Game.player.position.x < -Game.player.height:
+            Game.player.position.x = screen_width + Game.player.height
+        if Game.player.position.y > screen_height + Game.player.height:
+            Game.player.position.y = -Game.player.height
+        elif Game.player.position.y < -Game.player.height:
+            Game.player.position.y = screen_height + Game.player.height
+
+
 
 
 # On start
