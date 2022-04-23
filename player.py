@@ -50,3 +50,4 @@ class Player:
         self.velocity += self.direction.normalize()*self.acceleration
         if self.velocity.length() > self.max_speed:
             self.velocity = self.velocity.normalize()*self.max_speed
+

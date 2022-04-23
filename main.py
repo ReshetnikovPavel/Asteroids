@@ -43,7 +43,9 @@ class Game:
     @staticmethod
     def update():
         Game.player.update()
-        Game.loop_screen()
+        Game.loop_object(Game.player)
+        for bullet in Game.player_bullets:
+            Game.loop_object(bullet)
         Game.move_asteroids()
         Game.handle_events()
 
@@ -67,8 +69,6 @@ class Game:
     def move_bullets():
         for bullet in Game.player_bullets:
             bullet.move()
-            if bullet.is_off_screen(screen_width, screen_height):
-                Game.player_bullets.pop(Game.player_bullets.index(bullet))
 
     @staticmethod
     def control_player():
@@ -91,17 +91,15 @@ class Game:
                         Game.player_bullets.append(Bullet(Game.player))
 
     @staticmethod
-    def loop_screen():
-        if Game.player.position.x > screen_width + Game.player.height:
-            Game.player.position.x = -Game.player.height
-        elif Game.player.position.x < -Game.player.height:
-            Game.player.position.x = screen_width + Game.player.height
-        if Game.player.position.y > screen_height + Game.player.height:
-            Game.player.position.y = -Game.player.height
-        elif Game.player.position.y < -Game.player.height:
-            Game.player.position.y = screen_height + Game.player.height
-
-
+    def loop_object(obj):
+        if obj.position.x > screen_width + obj.height:
+            obj.position.x = -obj.height
+        elif obj.position.x < -obj.height:
+            obj.position.x = screen_width + obj.height
+        if obj.position.y > screen_height + obj.height:
+            obj.position.y = -obj.height
+        elif obj.position.y < -obj.height:
+            obj.position.y = screen_height + obj.height
 
 
 # On start
