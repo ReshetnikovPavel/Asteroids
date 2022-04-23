@@ -28,13 +28,17 @@ class Game:
                 if Game.count % 50 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     Game.asteroids.append(Asteroid(random_number, screen_width, screen_height))
+                Game.update()
                 Game.draw()
 
-                Game.move_asteroids()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     Game.run = False
         pg.quit()
+
+    @staticmethod
+    def update():
+        Game.move_asteroids()
 
     @staticmethod
     def draw():
