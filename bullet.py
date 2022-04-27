@@ -8,14 +8,15 @@ class Bullet:
         self.height = 4
         self.direction = player.direction
         self.velocity = 10 * player.direction
+        self.life = 150
 
-    def move(self):
+    def update(self):
         self.position += self.velocity
+        self.life -= 1
 
     def is_off_screen(self, screen_width, screen_height):
         return self.position.x < -50 or self.position.x > screen_width \
                or self.position.y < -50 or self.position.y > screen_height
-
 
     def draw(self, screen):
         pg.draw.rect(

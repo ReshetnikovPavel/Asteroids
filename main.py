@@ -1,6 +1,8 @@
 import pygame as pg
 import random
 
+import pygame.math
+
 from bullet import Bullet
 from player import Player
 
@@ -27,8 +29,6 @@ class Game:
             Game.clock.tick(60)
             Game.count += 1
             if not Game.game_over:
-                Game.control_player()
-                Game.move_bullets()
                 if Game.count % 50 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     Game.asteroids.append(Asteroid(random_number, screen_width, screen_height))
@@ -42,6 +42,8 @@ class Game:
 
     @staticmethod
     def update():
+        Game.control_player()
+        Game.update_bullets()
         Game.player.update()
         Game.loop_object(Game.player)
         for bullet in Game.player_bullets:
@@ -66,9 +68,11 @@ class Game:
             asteroid.y += asteroid.velocity.y
 
     @staticmethod
-    def move_bullets():
+    def update_bullets():
         for bullet in Game.player_bullets:
-            bullet.move()
+            bullet.update()
+            if bullet.life <= 0:
+                Game.player_bullets.remove(bullet)
 
     @staticmethod
     def control_player():
@@ -100,6 +104,24 @@ class Game:
             obj.position.y = -obj.height
         elif obj.position.y < -obj.height:
             obj.position.y = screen_height + obj.height
+
+    @staticmethod
+    def explode_asteroid(asteroid):
+        Game.asteroids.remove(asteroid)
+        if asteroid.rank > 1:
+            random_vec = Game.make_rand_vector()
+            random_dir = pygame.math.Vector2(random_vec[0], random_vec[1])
+            Game.asteroids.append(Asteroid(
+                asteroid.rank-1, screen_width, screen_height, (asteroid.x, asteroid.y), random_dir))
+            Game.asteroids.append(Asteroid(
+                asteroid.rank-1, screen_width, screen_height, (asteroid.x, asteroid.y), -random_dir))
+
+    @staticmethod
+    def make_rand_vector():
+        vec = [random.gauss(0, 1) for i in range(2)]
+        mag = sum(x ** 2 for x in vec) ** .5
+        return [x / mag for x in vec]
+
 
 
 # On start
