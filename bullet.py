@@ -4,6 +4,8 @@ import pygame as pg
 class Bullet:
     def __init__(self, player):
         self.position = player.head
+        self.x = self.position.x
+        self.y = self.position.y
         self.width = 4
         self.height = 4
         self.direction = player.direction
@@ -12,6 +14,8 @@ class Bullet:
 
     def update(self):
         self.position += self.velocity
+        self.x = self.position.x
+        self.y = self.position.y
         self.life -= 1
 
     def is_off_screen(self, screen_width, screen_height):

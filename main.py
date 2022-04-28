@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+import Assets
 
 import pygame.math
 
@@ -31,7 +32,8 @@ class Game:
             if not Game.game_over:
                 if Game.count % 50 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
-                    Game.asteroids.append(Asteroid(random_number, screen_width, screen_height))
+                    Game.asteroids.append(
+                        Asteroid(random_number, screen_width, screen_height))
                 Game.update()
                 Game.draw()
 
@@ -49,6 +51,7 @@ class Game:
         for bullet in Game.player_bullets:
             Game.loop_object(bullet)
         Game.move_asteroids()
+        Game.bullet_collision()
         Game.handle_events()
 
     @staticmethod
@@ -112,9 +115,11 @@ class Game:
             random_vec = Game.make_rand_vector()
             random_dir = pygame.math.Vector2(random_vec[0], random_vec[1])
             Game.asteroids.append(Asteroid(
-                asteroid.rank-1, screen_width, screen_height, (asteroid.x, asteroid.y), random_dir))
+                asteroid.rank - 1, screen_width, screen_height,
+                (asteroid.x, asteroid.y), random_dir))
             Game.asteroids.append(Asteroid(
-                asteroid.rank-1, screen_width, screen_height, (asteroid.x, asteroid.y), -random_dir))
+                asteroid.rank - 1, screen_width, screen_height,
+                (asteroid.x, asteroid.y), -random_dir))
 
     @staticmethod
     def make_rand_vector():
@@ -122,6 +127,20 @@ class Game:
         mag = sum(x ** 2 for x in vec) ** .5
         return [x / mag for x in vec]
 
+    @staticmethod
+    def bullet_collision():
+        for asteroid in Game.asteroids:
+            for bullet in Game.player_bullets:
+                if Game.is_in_bounds(asteroid, bullet):
+                    Game.explode_asteroid(asteroid)
+                    Game.player_bullets.pop(Game.player_bullets.index(bullet))
+
+    @staticmethod
+    def is_in_bounds(outer, inner):
+        return ((outer.x <= inner.x <= outer.x + outer. width)
+                or outer.x <= inner.x + inner.width <= outer.x + outer.width) \
+               and ((outer.y <= inner.y <= outer.y + outer.height)
+                    or outer.y <= inner.y + inner.height <= outer.y + outer.height)
 
 
 # On start
