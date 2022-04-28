@@ -17,10 +17,11 @@ class Asteroid:
                   random.randrange(0, screen_height - self.height))])
         else:
             self.spawn_point = spawn_point
-        self.x, self.y = self.spawn_point
+        x, y = self.spawn_point
+        self.position = m.Vector2(x, y)
         if direction is None:
-            self.direction = m.Vector2(1 if self.x < screen_width//2 else -1,
-                                   1 if self.y < screen_height//2 else -1)
+            self.direction = m.Vector2(1 if x < screen_width//2 else -1,
+                                   1 if y < screen_height//2 else -1)
         else:
             self.direction = direction
         self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3),
@@ -39,4 +40,4 @@ class Asteroid:
             return textures.asteroids_big[random_number]
 
     def draw(self, window):
-        window.blit(self.texture, (self.x, self.y))
+        window.blit(self.texture, self.position)

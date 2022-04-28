@@ -10,7 +10,7 @@ class Bullet:
         self.height = 4
         self.direction = player.direction
         self.velocity = 10 * player.direction
-        self.life = 150
+        self.life = 100
 
     def update(self):
         self.position += self.velocity
