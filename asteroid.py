@@ -1,8 +1,8 @@
-from Assets import Textures
-from Assets import Audio
 import random
 import pygame.math as m
 import pygame as pg
+
+import collision
 import vectorRandom
 
 
@@ -67,3 +67,9 @@ class Asteroid:
                 self.rank - 1,
                 self.position, -random_dir))
 
+    def check_bullet_collision(self, game):
+        for bullet in game.player.bullets:
+            if collision.check_collision(self, bullet):
+                self.explode(game)
+                game.score += 1
+                game.player.bullets.pop(game.player.bullets.index(bullet))

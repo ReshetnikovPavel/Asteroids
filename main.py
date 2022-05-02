@@ -52,7 +52,7 @@ class Game:
 
     def update(self):
         self.control_player()
-        self.player.update()
+        self.player.update(self)
         self.loop_object(self.player)
         for bullet in self.player.bullets:
             self.loop_object(bullet)
@@ -60,9 +60,10 @@ class Game:
             if bullet.life <= 0:
                 self.player.bullets.remove(bullet)
         for asteroid in self.asteroids:
+            asteroid.check_bullet_collision(self)
+            self.player.check_asteroid_collision(game, asteroid)
             self.loop_object(asteroid)
             asteroid.move()
-        self.check_bullet_collision()
         self.handle_events()
 
     def draw(self):
@@ -70,8 +71,13 @@ class Game:
         self.player.draw(self.screen)
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
+        lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
+                                      (255, 255, 255))
         self.screen.blit(score_text,
                          (self.screen_width - 500,
+                          35 + score_text.get_height()))
+        self.screen.blit(lives_text,
+                         (0,
                           35 + score_text.get_height()))
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
@@ -106,14 +112,6 @@ class Game:
             obj.position.y = -obj.height
         elif obj.position.y < -obj.height:
             obj.position.y = self.screen_height + obj.height
-
-    def check_bullet_collision(self):
-        for asteroid in self.asteroids:
-            for bullet in self.player.bullets:
-                if collision.check_collision(asteroid, bullet):
-                    asteroid.explode(game)
-                    self.score += 1
-                    self.player.bullets.pop(self.player.bullets.index(bullet))
 
 
 # On start

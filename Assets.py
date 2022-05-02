@@ -4,6 +4,8 @@ import pygame as pg
 class Textures:
     def __init__(self):
         self.player = pg.image.load(r'Assets\Textures\player.png')
+        self.player_no_texture = pg.image.load(r'Assets\Textures'
+                                               r'\player_no_texture.png')
         self.saucer = pg.image.load(r'Assets\Textures\saucer.png')
         self.asteroids_big = [
             pg.image.load(r'Assets\Textures\big_1.png'),
