@@ -1,6 +1,7 @@
 import pygame as pg
 import random
 import collision
+import Assets
 
 import pygame.math
 
@@ -14,6 +15,9 @@ pygame.init()
 
 class Game:
     def __init__(self):
+        self.is_audio_on = True
+        self.textures = Assets.Textures()
+        self.audio = Assets.Audio()
         self.screen_width = 800
         self.screen_height = 800
         self.clock = pg.time.Clock()
@@ -24,7 +28,6 @@ class Game:
         self.screen = pg.display.set_mode(
             (self.screen_width, self.screen_height))
         self.player = Player(self)
-        self.player_bullets = []
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
         self.scoreText = self.font.render('Score: ' + str(self.score), True,
@@ -51,11 +54,11 @@ class Game:
         self.control_player()
         self.player.update()
         self.loop_object(self.player)
-        for bullet in self.player_bullets:
+        for bullet in self.player.bullets:
             self.loop_object(bullet)
             bullet.update()
             if bullet.life <= 0:
-                self.player_bullets.remove(bullet)
+                self.player.bullets.remove(bullet)
         for asteroid in self.asteroids:
             self.loop_object(asteroid)
             asteroid.move()
@@ -72,7 +75,7 @@ class Game:
                           35 + score_text.get_height()))
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
-        for bullet in self.player_bullets:
+        for bullet in self.player.bullets:
             bullet.draw(self.screen)
         pg.display.update()
 
@@ -83,7 +86,7 @@ class Game:
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
             self.player.turn_right()
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.player.move_forward()
+            self.player.move_forward(game)
 
     def handle_events(self):
         for event in pg.event.get():
@@ -92,7 +95,7 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     if not self.game_over:
-                        self.player_bullets.append(Bullet(self.player))
+                        self.player.fire(self)
 
     def loop_object(self, obj):
         if obj.position.x > self.screen_width + obj.height:
@@ -106,11 +109,11 @@ class Game:
 
     def check_bullet_collision(self):
         for asteroid in self.asteroids:
-            for bullet in self.player_bullets:
+            for bullet in self.player.bullets:
                 if collision.check_collision(asteroid, bullet):
                     asteroid.explode(game)
                     self.score += 1
-                    self.player_bullets.pop(self.player_bullets.index(bullet))
+                    self.player.bullets.pop(self.player.bullets.index(bullet))
 
 
 # On start

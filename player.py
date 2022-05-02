@@ -1,13 +1,12 @@
 import math
-
-from Assets import Textures
 import pygame as pg
+
+from bullet import Bullet
 
 
 class Player:
     def __init__(self, game):
-        textures = Textures()
-        self.texture = textures.player
+        self.texture = game.textures.player
         self.width = self.texture.get_width()
         self.height = self.texture.get_height()
         self.position = pg.Vector2(game.screen_width // 2,
@@ -25,6 +24,7 @@ class Player:
         self.velocity = pg.Vector2(0, 0)
         self.acceleration = 0.18
         self.max_speed = 10
+        self.bullets = []
 
     def draw(self, screen):
         screen.blit(self.rotated_surface, self.rotated_rectangle)
@@ -48,7 +48,15 @@ class Player:
             self.position.y + self.direction.y * self.height // 2)
         self.position += self.velocity
 
-    def move_forward(self):
+    def move_forward(self, game):
+        if game.is_audio_on:
+            pg.mixer.Sound.play(game.audio.thrust)
         self.velocity += self.direction.normalize() * self.acceleration
         if self.velocity.length() > self.max_speed:
             self.velocity = self.velocity.normalize() * self.max_speed
+
+    def fire(self, game):
+        if game.is_audio_on:
+            pg.mixer.Sound.play(game.audio.fire)
+        self.bullets.append(Bullet(self))
+

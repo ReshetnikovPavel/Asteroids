@@ -10,7 +10,7 @@ class Asteroid:
     def __init__(self, game, rank, spawn_point=None,
                  direction=None):  # rank - размер астероида
         self.rank = rank
-        self.texture = self._rank_to_texture(rank)
+        self.texture = self._rank_to_texture(game, rank)
         self.width = self.texture.get_width()
         self.height = self.texture.get_height()
         if spawn_point is None:
@@ -34,8 +34,8 @@ class Asteroid:
                                   self.direction.y * random.randrange(1, 3))
 
     @staticmethod
-    def _rank_to_texture(rank):
-        textures = Textures()
+    def _rank_to_texture(game, rank):
+        textures = game.textures
         random_number = random.randint(0, 3)
         if rank == 1:
             return textures.asteroids_small[random_number]
@@ -53,7 +53,8 @@ class Asteroid:
 
     def explode(self, game):
         game.asteroids.remove(self)
-        self.play_explosion_sound()
+        if game.is_audio_on:
+            pg.mixer.Sound.play(game.audio.explodes[self.rank-1])
         if self.rank > 1:
             random_vec = vectorRandom.make_rand_vector()
             random_dir = m.Vector2(random_vec[0], random_vec[1])
@@ -66,6 +67,3 @@ class Asteroid:
                 self.rank - 1,
                 self.position, -random_dir))
 
-    def play_explosion_sound(self):
-        audio = Audio()
-        pg.mixer.Sound.play(audio.explodes[self.rank-1])
