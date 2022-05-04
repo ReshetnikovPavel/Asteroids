@@ -30,20 +30,21 @@ class Game:
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
-        self.scoreText = self.font.render('Score: ' + str(self.score), True,
-                                          (255, 255, 255))
 
     def run(self):
         pg.display.set_caption('Asteroids')
         while self.is_run:
             self.clock.tick(60)
             self.count += 1
+            if self.player.lives <= -1:
+                self.game_over = True
+
             if not self.game_over:
                 if self.count % 100 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     self.asteroids.append(Asteroid(self, random_number))
                 self.update()
-                self.draw()
+            self.draw()
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -51,7 +52,7 @@ class Game:
         pg.quit()
 
     def update(self):
-        self.control_player()
+        self.handle_controls()
         self.player.update(self)
         self.loop_object(self.player)
         for bullet in self.player.bullets:
@@ -68,7 +69,6 @@ class Game:
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        self.player.draw(self.screen)
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
         lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
@@ -76,16 +76,30 @@ class Game:
         self.screen.blit(score_text,
                          (self.screen_width - 500,
                           35 + score_text.get_height()))
-        self.screen.blit(lives_text,
-                         (0,
-                          35 + score_text.get_height()))
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
             bullet.draw(self.screen)
+        if not self.game_over:
+            self.player.draw(self.screen)
+            self.screen.blit(lives_text,
+                             (0,
+                              35 + score_text.get_height()))
+        else:
+            gameover_text = self.font.render('GAME OVER', True,
+                                          (255, 255, 255))
+            gameover_text_2 = self.font.render('(Press ENTER to restart)', True,
+                                          (255, 255, 255))
+
+            self.screen.blit(gameover_text,
+                             (game.screen_width/2 - gameover_text.get_width()/2,
+                              game.screen_height/2 - gameover_text.get_height()/2))
+            self.screen.blit(gameover_text_2,
+                             (game.screen_width / 2 - gameover_text_2.get_width() / 2,
+                              game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height()))
         pg.display.update()
 
-    def control_player(self):
+    def handle_controls(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.player.turn_left()
