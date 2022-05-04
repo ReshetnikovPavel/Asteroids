@@ -12,7 +12,6 @@ from asteroid import Asteroid
 
 pygame.init()
 
-
 class Game:
     def __init__(self):
         self.is_audio_on = True
@@ -38,7 +37,7 @@ class Game:
             self.count += 1
             if self.player.lives <= -1:
                 self.game_over = True
-
+            self.handle_controls()
             if not self.game_over:
                 if self.count % 100 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
@@ -52,7 +51,6 @@ class Game:
         pg.quit()
 
     def update(self):
-        self.handle_controls()
         self.player.update(self)
         self.loop_object(self.player)
         for bullet in self.player.bullets:
@@ -88,7 +86,7 @@ class Game:
         else:
             gameover_text = self.font.render('GAME OVER', True,
                                           (255, 255, 255))
-            gameover_text_2 = self.font.render('(Press ENTER to restart)', True,
+            gameover_text_2 = self.font.render('(Press enter to restart)', True,
                                           (255, 255, 255))
 
             self.screen.blit(gameover_text,
@@ -101,12 +99,18 @@ class Game:
 
     def handle_controls(self):
         keys = pg.key.get_pressed()
-        if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.player.turn_left()
-        if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.player.turn_right()
-        if keys[pg.K_UP] or keys[pg.K_w]:
-            self.player.move_forward(game)
+
+        if not self.game_over:
+            if keys[pg.K_LEFT] or keys[pg.K_a]:
+                self.player.turn_left()
+            if keys[pg.K_RIGHT] or keys[pg.K_d]:
+                self.player.turn_right()
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.player.move_forward(game)
+
+        elif keys[pg.K_RETURN]:
+            self.__init__()
+            print("You've met with a terrible fate, haven't you?")
 
     def handle_events(self):
         for event in pg.event.get():
