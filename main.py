@@ -2,15 +2,14 @@ import pygame as pg
 import random
 import collision
 import Assets
-
 import pygame.math
-
 from bullet import Bullet
 from player import Player
-
 from asteroid import Asteroid
+from score_manager import BestScore
 
 pygame.init()
+
 
 class Game:
     def __init__(self):
@@ -29,6 +28,7 @@ class Game:
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
+        self.best_score = BestScore()
 
     def run(self):
         pg.display.set_caption('Asteroids')
@@ -53,6 +53,7 @@ class Game:
     def update(self):
         self.player.update(self)
         self.loop_object(self.player)
+        self.best_score.update_score(self.score)
         for bullet in self.player.bullets:
             self.loop_object(bullet)
             bullet.update()
@@ -69,11 +70,16 @@ class Game:
         self.screen.fill((0, 0, 0))
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
+        best_score_text = self.font.render('Best: ' + str(self.best_score.value), True,
+                                      (255, 255, 255))
         lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
                                       (255, 255, 255))
         self.screen.blit(score_text,
                          (self.screen_width - 500,
                           35 + score_text.get_height()))
+        self.screen.blit(best_score_text,
+                         (self.screen_width - 500,
+                          30))
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
@@ -81,8 +87,8 @@ class Game:
         if not self.game_over:
             self.player.draw(self.screen)
             self.screen.blit(lives_text,
-                             (0,
-                              35 + score_text.get_height()))
+                             (10,
+                              30))
         else:
             gameover_text = self.font.render('GAME OVER', True,
                                           (255, 255, 255))
