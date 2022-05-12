@@ -7,10 +7,12 @@ import pygame.math
 
 from bullet import Bullet
 from player import Player
+from saucer import Saucer
 
 from asteroid import Asteroid
 
 pygame.init()
+
 
 class Game:
     def __init__(self):
@@ -21,6 +23,7 @@ class Game:
         self.screen_height = 800
         self.clock = pg.time.Clock()
         self.asteroids = []
+        self.saucers = []
         self.count = 0
         self.is_run = True
         self.game_over = False
@@ -42,6 +45,8 @@ class Game:
                 if self.count % 100 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     self.asteroids.append(Asteroid(self, random_number))
+                if self.count % 55 == 0:
+                    self.saucers.append(Saucer(self))
                 self.update()
             self.draw()
 
@@ -63,6 +68,18 @@ class Game:
             self.player.check_asteroid_collision(game, asteroid)
             self.loop_object(asteroid)
             asteroid.move()
+
+        for saucer in self.saucers:
+            saucer.check_asteroid_collision(self)
+            saucer.check_bullet_collision(self)
+            self.player.check_asteroid_collision(self, saucer)
+            saucer.move(self)
+            for bullet in saucer.bullets:
+                self.loop_object(bullet)
+                bullet.update()
+                if bullet.life <= 0:
+                    saucer.bullets.remove(bullet)
+
         self.handle_events()
 
     def draw(self):
@@ -78,6 +95,10 @@ class Game:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
             bullet.draw(self.screen)
+        for saucer in self.saucers:
+            saucer.draw(self.screen)
+            for bullet in saucer.bullets:
+                bullet.draw(self.screen)
         if not self.game_over:
             self.player.draw(self.screen)
             self.screen.blit(lives_text,
