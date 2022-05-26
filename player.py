@@ -71,7 +71,7 @@ class Player:
     def check_asteroid_collision(self, game, asteroid):
         if self.is_invincible:
             return
-        if collision.check_collision(self, asteroid):
+        if collision.check_player_triangular_collision(self, asteroid):
             asteroid.explode(game)
             self.lives -= 1
             self.die(game)
