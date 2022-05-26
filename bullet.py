@@ -2,14 +2,15 @@ import pygame as pg
 
 
 class Bullet:
-    def __init__(self, player):
+    def __init__(self, player, direction=None):
         self.position = player.head
         self.x = self.position.x
         self.y = self.position.y
         self.width = 4
         self.height = 4
-        self.direction = player.direction
-        self.velocity = 10 * player.direction
+        if direction is None:
+            self.direction = player.direction
+        self.velocity = 10 * direction
         self.life = 100
 
     def update(self):
