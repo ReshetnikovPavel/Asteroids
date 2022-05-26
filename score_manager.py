@@ -12,7 +12,6 @@ class BestScore:
             self.value = f["best_score"]
             self.scores = f["score_list"]
 
-
     def update_score(self, value, player_name):
         with shelve.open("score.txt") as f:
             if value > self.value:

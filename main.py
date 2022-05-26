@@ -29,6 +29,7 @@ class Game:
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
         self.best_score = BestScore()
+        self.draw = self.draw_game
 
     def run(self):
         pg.display.set_caption('Asteroids')
@@ -65,7 +66,7 @@ class Game:
             asteroid.move()
         self.handle_events()
 
-    def draw(self):
+    def draw_game(self):
         self.screen.fill((0, 0, 0))
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
@@ -83,27 +84,30 @@ class Game:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
             bullet.draw(self.screen)
-        if not self.game_over:
-            self.player.draw(self.screen)
-            self.screen.blit(lives_text,
-                             (10,
-                              30))
-        else:
-            gameover_text = self.font.render('GAME OVER', True,
-                                          (255, 255, 255))
-            gameover_text_2 = self.font.render('(Press enter to restart)', True,
-                                          (255, 255, 255))
+        self.player.draw(self.screen)
+        self.screen.blit(lives_text,
+                         (10,
+                          30))
+        pg.display.update()
 
-            self.screen.blit(gameover_text,
-                             (game.screen_width/2 - gameover_text.get_width()/2,
-                              game.screen_height/2 - gameover_text.get_height()/2))
-            self.screen.blit(gameover_text_2,
-                             (game.screen_width / 2 - gameover_text_2.get_width() / 2,
-                              game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height()))
+    def draw_death_screen(self):
+        gameover_text = self.font.render('GAME OVER', True,
+                                         (255, 255, 255))
+        gameover_text_2 = self.font.render('(Press enter to restart)', True,
+                                           (255, 255, 255))
+
+        self.screen.blit(gameover_text,
+                         (game.screen_width / 2 - gameover_text.get_width() / 2,
+                          game.screen_height / 2 - gameover_text.get_height() / 2))
+        self.screen.blit(gameover_text_2,
+                         (
+                         game.screen_width / 2 - gameover_text_2.get_width() / 2,
+                         game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height()))
         pg.display.update()
 
     def end_game(self):
         self.game_over = True
+        self.draw = self.draw_death_screen
         self.best_score.update_score(self.score, 'STV')
 
     def handle_controls(self):
