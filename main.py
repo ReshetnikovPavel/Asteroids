@@ -46,7 +46,7 @@ class Game:
                 if self.count % 100 == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     self.asteroids.append(Asteroid(self, random_number))
-                if self.count % 55 == 0:
+                if self.count % 1055 == 0:
                     self.saucers.append(Saucer(self))
                 self.update()
             self.draw()

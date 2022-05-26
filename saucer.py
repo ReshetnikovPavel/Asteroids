@@ -35,14 +35,14 @@ class Saucer:
         self.head = self.position
 
     def move(self, game):
-        if game.count % 400 == 0:
+        if game.count % 300 == 0:
             self.change_direction()
             self.fire(game)
         self.position.x += self.velocity.x
         self.position.y += self.velocity.y
 
     def fire(self, game):
-        direction = game.player.position - self.position
+        direction = game.player.position - self.position  # TODO
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.fire)
         self.bullets.append(Bullet(self, direction))
