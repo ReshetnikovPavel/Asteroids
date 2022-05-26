@@ -52,7 +52,8 @@ class Asteroid:
         self.position.y += self.velocity.y
 
     def explode(self, game):
-        game.asteroids.remove(self)
+        if self in game.asteroids:
+            game.asteroids.remove(self)
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.explodes[self.rank-1])
         if self.rank > 1:

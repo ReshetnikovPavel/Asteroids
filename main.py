@@ -35,8 +35,8 @@ class Game:
         while self.is_run:
             self.clock.tick(60)
             self.count += 1
-            if self.player.lives <= -1:
-                self.game_over = True
+            if self.player.lives <= -1 and not self.game_over:
+                self.end_game()
             self.handle_controls()
             if not self.game_over:
                 if self.count % 100 == 0:
@@ -53,7 +53,6 @@ class Game:
     def update(self):
         self.player.update(self)
         self.loop_object(self.player)
-        self.best_score.update_score(self.score)
         for bullet in self.player.bullets:
             self.loop_object(bullet)
             bullet.update()
@@ -102,6 +101,10 @@ class Game:
                              (game.screen_width / 2 - gameover_text_2.get_width() / 2,
                               game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height()))
         pg.display.update()
+
+    def end_game(self):
+        self.game_over = True
+        self.best_score.update_score(self.score, 'STV')
 
     def handle_controls(self):
         keys = pg.key.get_pressed()
