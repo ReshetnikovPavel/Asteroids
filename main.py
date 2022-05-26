@@ -64,6 +64,7 @@ class Game:
             bullet.update()
             if bullet.life <= 0:
                 self.player.bullets.remove(bullet)
+
         for asteroid in self.asteroids:
             asteroid.check_bullet_collision(self)
             self.player.check_asteroid_collision(game, asteroid)
@@ -76,6 +77,7 @@ class Game:
             self.player.check_asteroid_collision(self, saucer)
             saucer.move(self)
             for bullet in saucer.bullets:
+                self.player.check_bullet_collision(self, bullet)
                 self.loop_object(bullet)
                 bullet.update()
                 if bullet.life <= 0:
