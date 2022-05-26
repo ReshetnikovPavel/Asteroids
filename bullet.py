@@ -1,15 +1,16 @@
 import pygame as pg
+import copy
 
 
 class Bullet:
-    def __init__(self, player):
-        self.position = player.head
+    def __init__(self, player, direction=None):
+        self.position = copy.copy(player.head)
         self.x = self.position.x
         self.y = self.position.y
         self.width = 4
         self.height = 4
         self.direction = player.direction
-        self.velocity = 10 * player.direction
+        self.velocity = 10 * self.direction
         self.life = 100
 
     def update(self):

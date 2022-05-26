@@ -76,6 +76,15 @@ class Player:
             self.lives -= 1
             self.die(game)
 
+    def check_bullet_collision(self, game, bullet):
+        if self.is_invincible:
+            return
+        if collision.check_player_triangular_collision(self, bullet):
+            if game.is_audio_on:
+                pg.mixer.Sound.play(game.audio.explodes[2])
+            self.lives -= 1
+            self.die(game)
+
     def die(self, game):
         self.reset(game)
         self.latest_death_frame = game.count
