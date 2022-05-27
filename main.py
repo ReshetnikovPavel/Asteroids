@@ -80,7 +80,9 @@ class Game:
                 self.player.check_bullet_collision(self, bullet)
                 self.loop_object(bullet)
                 bullet.update()
-                if bullet.life <= 0:
+                distance = bullet.position.distance_to(self.player.position)
+                is_near = distance > self.player.height * 2
+                if bullet.life <= 0 and is_near:
                     saucer.bullets.remove(bullet)
 
         self.handle_events()

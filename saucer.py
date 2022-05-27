@@ -35,7 +35,7 @@ class Saucer:
         self.head = self.position
 
     def move(self, game):
-        if game.count % 300 == 0:
+        if game.count % 100 == 0:
             self.change_direction()
             self.fire(game)
         self.position.x += self.velocity.x
