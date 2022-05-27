@@ -36,6 +36,10 @@ class Saucer:
         self.head = self.position
 
     def move(self, game):
+        if self.position.x > game.screen_width \
+                or self.position.y > game.screen_height:
+            self.move_towards_center(game)
+
         if game.count % 300 == 0:
             self.change_direction()
             self.fire(game)
@@ -71,6 +75,17 @@ class Saucer:
             game.bonuses.append(Bonus(game, self.position, self.direction))
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.explodes[2])
+
+    def move_towards_center(self, game):
+        center = m.Vector2(game.screen_width / 2, game.screen_height / 2)
+        rand_vector = vectorRandom.make_rand_vector()
+        coefficient = 0.5
+        rand_vector = m.Vector2(rand_vector.x * coefficient,
+                                rand_vector.y * coefficient)
+        self.direction = (center - self.position + rand_vector)
+        self.direction.normalize()
+        self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3),
+                                  self.direction.y * random.randrange(1, 3))
 
     def draw(self, window):
         window.blit(self.texture, self.position)
