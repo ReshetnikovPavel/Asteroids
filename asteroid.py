@@ -72,5 +72,5 @@ class Asteroid:
         for bullet in game.player.bullets:
             if collision.check_collision(self, bullet):
                 self.explode(game)
-                game.score += 1
+                game.score += game.get_score_multiplier()
                 game.player.bullets.pop(game.player.bullets.index(bullet))

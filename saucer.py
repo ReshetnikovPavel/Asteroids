@@ -68,8 +68,7 @@ class Saucer:
     def explode(self, game):
         if self in game.saucers:
             game.saucers.remove(self)
-            game.bonuses.append(
-                Bonus(game, self.position, self.direction, self.velocity))
+            game.bonuses.append(Bonus(game, self.position, self.direction))
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.explodes[2])
 

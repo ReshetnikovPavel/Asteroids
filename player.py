@@ -30,9 +30,12 @@ class Player:
         self.invincibility_frames = 100
         self.latest_death_frame = -self.invincibility_frames
         self.is_invincible = False
+        self.shield = 0
 
-    def draw(self, screen):
-        screen.blit(self.rotated_surface, self.rotated_rectangle)
+    def draw(self, game):
+        if self.is_invincible and game.count % 6 > 2:
+            return
+        game.screen.blit(self.rotated_surface, self.rotated_rectangle)
 
     def turn_left(self):
         self.angle += 5
@@ -41,8 +44,17 @@ class Player:
         self.angle -= 5
 
     def update(self, game):
+        self.update_texture(game)
         self.update_geometry()
         self.check_invincibility(game)
+        if self.shield > 0:
+            self.shield -= 1
+
+    def update_texture(self, game):
+        if self.shield > 100 or self.shield > 0 and game.count % 6 > 2:
+            self.texture = game.textures.shielded_player
+        else:
+            self.texture = game.textures.player
 
     def update_geometry(self):
         self.rotated_surface = pg.transform.rotate(self.texture, self.angle)
@@ -69,7 +81,7 @@ class Player:
         self.bullets.append(Bullet(self))
 
     def check_asteroid_collision(self, game, asteroid):
-        if self.is_invincible:
+        if self.is_invincible or self.shield > 0:
             return
         if collision.check_player_triangular_collision(self, asteroid):
             asteroid.explode(game)
@@ -84,13 +96,18 @@ class Player:
             self.die(game)
 
     def check_bullet_collision(self, game, bullet):
-        if self.is_invincible:
+        if self.is_invincible or self.shield > 0:
             return
         if collision.check_player_triangular_collision(self, bullet):
             if game.is_audio_on:
                 pg.mixer.Sound.play(game.audio.explodes[2])
             self.lives -= 1
             self.die(game)
+
+    def check_bonus_collision(self, game, bonus):
+        if collision.check_player_triangular_collision(self, bonus):
+            game.bonuses.remove(bonus)
+            bonus.activate(game)
 
     def die(self, game):
         self.reset(game)
@@ -100,17 +117,8 @@ class Player:
         frames_since_death = game.count - self.latest_death_frame
         if frames_since_death < self.invincibility_frames:
             self.is_invincible = True
-            if frames_since_death % 2:
-                self.switch_texture(game)
         else:
             self.is_invincible = False
-            self.texture = game.textures.player
-
-    def switch_texture(self, game):
-        if self.texture == game.textures.player:
-            self.texture = game.textures.player_no_texture
-        else:
-            self.texture = game.textures.player
 
     def reset(self, game):
         self.width = self.texture.get_width()
