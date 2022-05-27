@@ -206,7 +206,7 @@ class Game:
                     self.handle_events = self.handle_table_events
                 elif event.key == pg.K_BACKSPACE:
                     self.player_name = self.player_name[:-1]
-                elif len(self.player_name) < 3:
+                elif event.key != pg.K_SPACE and len(self.player_name) < 3:
                     self.player_name += event.unicode
 
     def handle_table_events(self):
