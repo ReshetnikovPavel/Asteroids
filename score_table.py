@@ -1,7 +1,7 @@
 import shelve
 
 
-class BestScore:
+class ScoreTable:
     def __init__(self):
         self.entries_count = 8
         with shelve.open("score.txt") as f:
@@ -19,7 +19,8 @@ class BestScore:
                 f["best_score"] = value
 
             self.scores.append((player_name, value))
-            self.scores.sort(reverse=True)
+            self.scores = sorted(self.scores, key=lambda x: x[1], reverse=True)
             if len(self.scores) > self.entries_count:
                 self.scores.pop()
             f["score_list"] = self.scores
+
