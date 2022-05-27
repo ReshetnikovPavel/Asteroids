@@ -78,12 +78,11 @@ class Saucer:
 
     def move_towards_center(self, game):
         center = m.Vector2(game.screen_width / 2, game.screen_height / 2)
-        rand_vector = vectorRandom.make_rand_vector()
+        rand_vector = m.Vector2(vectorRandom.make_rand_vector())
         coefficient = 0.5
         rand_vector = m.Vector2(rand_vector.x * coefficient,
                                 rand_vector.y * coefficient)
-        self.direction = (center - self.position + rand_vector)
-        self.direction.normalize()
+        self.direction = (center - self.position + rand_vector).normalize()*0.1
         self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3),
                                   self.direction.y * random.randrange(1, 3))
 
