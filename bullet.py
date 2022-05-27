@@ -23,8 +23,12 @@ class Bullet:
         return self.position.x < -50 or self.position.x > screen_width \
                or self.position.y < -50 or self.position.y > screen_height
 
-    def draw(self, screen):
+    def draw(self, game):
+        if game.double_score > 0:
+            color = (241, 196, 15)
+        else:
+            color = (255, 255, 255)
         pg.draw.rect(
-            screen,
-            (255, 255, 255),
+            game.screen,
+            color,
             [self.position.x, self.position.y, self.width, self.height])

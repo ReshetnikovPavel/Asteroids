@@ -36,6 +36,7 @@ class Game:
         self.draw = self.draw_game
         self.handle_events = self.handle_game_events
         self.player_name = ''
+        self.double_score = 0
 
     def run(self):
         pg.display.set_caption('Asteroids')
@@ -92,6 +93,12 @@ class Game:
         for bonus in self.bonuses:
             bonus.move(game)
             self.loop_object(bonus)
+            self.player.check_bonus_collision(game, bonus)
+            if bonus.life <= 0:
+                self.bonuses.remove(bonus)
+
+        if self.double_score > 0:
+            self.double_score -= 1
 
     def draw_game(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
@@ -109,14 +116,14 @@ class Game:
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
-            bullet.draw(self.screen)
+            bullet.draw(game)
         for saucer in self.saucers:
             saucer.draw(self.screen)
             for bullet in saucer.bullets:
-                bullet.draw(self.screen)
+                bullet.draw(game)
         for bonus in self.bonuses:
-            bonus.draw(self.screen)
-        self.player.draw(self.screen)
+            bonus.draw(game)
+        self.player.draw(game)
         self.screen.blit(lives_text,
                          (10,
                           30))
@@ -231,6 +238,12 @@ class Game:
             obj.position.y = -obj.height
         elif obj.position.y < -obj.height:
             obj.position.y = self.screen_height + obj.height
+
+    def get_score_multiplier(self):
+        if self.double_score > 0:
+            return 2
+        else:
+            return 1
 
 
 # On start
