@@ -73,7 +73,14 @@ class Player:
             return
         if collision.check_player_triangular_collision(self, asteroid):
             asteroid.explode(game)
-            self.lives -= 1
+            if not hasattr(asteroid, 'rank'):
+                self.lives -= 1
+            elif asteroid.rank == 1:
+                self.lives -= 0.5
+            elif asteroid.rank == 2:
+                self.lives -= 1
+            elif asteroid.rank == 3:
+                self.lives -= 2
             self.die(game)
 
     def check_bullet_collision(self, game, bullet):
