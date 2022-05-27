@@ -24,7 +24,7 @@ class Textures:
             pg.image.load(r'Assets\Textures\small_4.png')]
         self.life_bonus = pg.image.load(r'Assets\Textures\life_bonus.png')
         self.shield_bonus = pg.image.load(r'Assets\Textures\shield_bonus.png')
-        self.point_bonus = pg.image.load(r'Assets\Textures\point_bonus.png')
+        self.score_bonus = pg.image.load(r'Assets\Textures\score_bonus.png')
 
 
 class Audio:
