@@ -23,6 +23,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.asteroids = []
         self.saucers = []
+        self.bonuses = []
         self.count = 0
         self.is_run = True
         self.game_over = False
@@ -41,7 +42,7 @@ class Game:
         while self.is_run:
             self.clock.tick(60)
             self.count += 1
-            if self.player.lives <= -1 and not self.game_over:
+            if self.player.lives < 0 and not self.game_over:
                 self.end_game()
             if not self.game_over:
                 if self.count % 100 == 0:
@@ -88,6 +89,10 @@ class Game:
                 if bullet.life <= 0:
                     saucer.bullets.remove(bullet)
 
+        for bonus in self.bonuses:
+            bonus.move(game)
+            self.loop_object(bonus)
+
     def draw_game(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
@@ -109,6 +114,8 @@ class Game:
             saucer.draw(self.screen)
             for bullet in saucer.bullets:
                 bullet.draw(self.screen)
+        for bonus in self.bonuses:
+            bonus.draw(self.screen)
         self.player.draw(self.screen)
         self.screen.blit(lives_text,
                          (10,

@@ -5,6 +5,7 @@ import vectorRandom
 
 import collision
 from bullet import Bullet
+from bonus import Bonus
 
 
 class Saucer:
@@ -62,12 +63,12 @@ class Saucer:
         for bullet in game.player.bullets:
             if collision.check_collision(self, bullet):
                 self.explode(game)
-                game.player.lives += 1
                 game.player.bullets.remove(bullet)
 
     def explode(self, game):
         if self in game.saucers:
             game.saucers.remove(self)
+            game.bonuses.append(Bonus(game, self.position, self.direction, self.velocity))
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.explodes[2])
 
