@@ -44,11 +44,14 @@ class Bonus:
     @staticmethod
     def life_bonus(game):
         game.player.lives += 1
+        game.score += 3
 
     @staticmethod
     def shield_bonus(game):
         game.player.shield = 300
+        game.score += 3
 
     @staticmethod
     def score_bonus(game):
         game.double_score = 200
+        game.score += 3
