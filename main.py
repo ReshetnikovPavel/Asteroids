@@ -13,6 +13,37 @@ from score_table import ScoreTable
 pygame.init()
 
 
+class LevelInfo:
+    def __init__(self, level_count, ticks_to_next_level,
+                 level_start_tick,
+                 asteroids_timing, saucer_timing,
+                 asteroid_speed_coefficient,
+                 saucer_fire_timing):
+
+        self.level_count = level_count
+        self.ticks_to_next_level = ticks_to_next_level
+        self.level_start_tick = level_start_tick
+        self.asteroids_timing = asteroids_timing
+        self.saucer_timing = saucer_timing
+        self.asteroid_speed_coefficient = asteroid_speed_coefficient
+        self.saucer_fire_timing = saucer_fire_timing
+
+    def move_to_next_level(self, level_start_tick):
+        self.level_count += 1
+        self.ticks_to_next_level *= 1.5
+        self.asteroids_timing //= 1.1
+        self.saucer_timing //= 1.1
+        self.asteroid_speed_coefficient *= 1.1
+        self.saucer_fire_timing //= 1.5
+        self.level_start_tick = level_start_tick
+        print(f'next level {self.level_count}')
+        print(f'asteroid_speed_coeff{self.asteroid_speed_coefficient}')
+
+    def check_next_level(self, current_tick):
+        if current_tick - self.level_start_tick > self.ticks_to_next_level:
+            self.move_to_next_level(current_tick)
+
+
 class Game:
     def __init__(self):
         self.is_audio_on = True
@@ -37,6 +68,7 @@ class Game:
         self.handle_events = self.handle_game_events
         self.player_name = ''
         self.double_score = 0
+        self.level_info = LevelInfo(1, 1500, 0, 100, 1055, 1, 300)
 
     def run(self):
         pg.display.set_caption('Asteroids')
@@ -45,12 +77,15 @@ class Game:
             self.count += 1
             if self.player.lives < 0 and not self.game_over:
                 self.end_game()
+
             if not self.game_over:
-                if self.count % 100 == 0:
+                if self.count % self.level_info.asteroids_timing == 0:
                     random_number = random.choice([1, 1, 1, 2, 2, 3])
                     self.asteroids.append(Asteroid(self, random_number))
-                if self.count % 1055 == 0:
+
+                if self.count % self.level_info.saucer_timing == 0:
                     self.saucers.append(Saucer(self))
+
                 self.handle_controls()
                 self.update()
             self.handle_events()
@@ -64,6 +99,7 @@ class Game:
         pg.quit()
 
     def update(self):
+        self.level_info.check_next_level(self.count)
         self.player.update(self)
         self.loop_object(self.player)
         for bullet in self.player.bullets:
