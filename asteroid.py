@@ -30,8 +30,10 @@ class Asteroid:
                 1 if y < game.screen_height // 2 else -1)
         else:
             self.direction = direction
-        self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3),
-                                  self.direction.y * random.randrange(1, 3))
+        self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3)
+                                  * game.level_info.asteroid_speed_coefficient,
+                                  self.direction.y * random.randrange(1, 3)
+                                  * game.level_info.asteroid_speed_coefficient)
 
     @staticmethod
     def _rank_to_texture(game, rank):
@@ -55,7 +57,7 @@ class Asteroid:
         if self in game.asteroids:
             game.asteroids.remove(self)
         if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.explodes[self.rank-1])
+            pg.mixer.Sound.play(game.audio.explodes[self.rank - 1])
         if self.rank > 1:
             random_vec = vectorRandom.make_rand_vector()
             random_dir = m.Vector2(random_vec[0], random_vec[1])

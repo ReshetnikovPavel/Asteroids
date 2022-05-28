@@ -40,7 +40,7 @@ class Saucer:
                 or self.position.y > game.screen_height:
             self.move_towards_center(game)
 
-        if game.count % 300 == 0:
+        if game.count % game.level_info.saucer_fire_timing == 0:
             self.change_direction()
             self.fire(game)
         self.position.x += self.velocity.x
