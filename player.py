@@ -109,6 +109,8 @@ class Player:
             game.bonuses.remove(bonus)
             bonus.activate(game)
             game.score += 3 * game.get_score_multiplier()
+            if game.is_audio_on:
+                pg.mixer.Sound.play(game.audio.bonus)
 
     def die(self, game):
         self.reset(game)

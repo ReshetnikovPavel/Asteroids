@@ -41,3 +41,6 @@ class Audio:
         self.s_fire = pg.mixer.Sound(r'Assets\Audio\SFIRE.WAV')
         self.s_saucer = pg.mixer.Sound(r'Assets\Audio\SSAUCER.WAV')
         self.thrust = pg.mixer.Sound(r'Assets\Audio\THRUST.WAV')
+        self.bonus = pg.mixer.Sound(r'Assets\Audio\BONUS.WAV')
+        self.levelup = pg.mixer.Sound(r'Assets\Audio\LEVELUP.WAV')
+
