@@ -143,11 +143,19 @@ class Game:
                                            (255, 255, 255))
         lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
                                       (255, 255, 255))
+        level_text = self.font.render('Level ' + str(self.level_info.level_count), True,
+                                      (255, 255, 255))
         self.screen.blit(score_text,
                          (self.screen_width - 500,
                           35 + score_text.get_height()))
         self.screen.blit(best_score_text,
                          (self.screen_width - 500,
+                          30))
+        self.screen.blit(level_text,
+                         (self.screen_width - 20 - level_text.get_width(),
+                          30))
+        self.screen.blit(lives_text,
+                         (20,
                           30))
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
@@ -160,9 +168,6 @@ class Game:
         for bonus in self.bonuses:
             bonus.draw(game)
         self.player.draw(game)
-        self.screen.blit(lives_text,
-                         (10,
-                          30))
 
     def draw_death_screen(self):
         score_text = self.font.render('Score: ' + str(self.score), True,

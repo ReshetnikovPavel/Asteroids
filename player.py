@@ -108,6 +108,7 @@ class Player:
         if collision.check_player_triangular_collision(self, bonus):
             game.bonuses.remove(bonus)
             bonus.activate(game)
+            game.score += 3 * game.get_score_multiplier()
 
     def die(self, game):
         self.reset(game)
