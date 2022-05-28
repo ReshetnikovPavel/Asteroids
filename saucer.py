@@ -67,6 +67,7 @@ class Saucer:
         for bullet in game.player.bullets:
             if collision.check_collision(self, bullet):
                 self.explode(game)
+                game.score += 5
                 game.player.bullets.remove(bullet)
 
     def explode(self, game):
