@@ -62,7 +62,7 @@ class Game:
         self.is_run = True
         self.game_over = False
         self.screen = pg.display.set_mode(
-            (self.screen_width,self.screen_height), pg.FULLSCREEN|pg.SCALED)
+            (self.screen_width,self.screen_height), pg.FULLSCREEN | pg.SCALED)
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
@@ -241,6 +241,9 @@ class Game:
         self.game_over = True
         self.draw = self.draw_death_screen
         self.handle_events = self.handle_death_events
+        pg.mixer.music.stop()
+        pg.mixer.music.load(r'Assets\Audio\DEFEAT.WAV')
+        pg.mixer.music.play(-1)
         print("You've met with a terrible fate, haven't you?")
 
     def handle_controls(self):
