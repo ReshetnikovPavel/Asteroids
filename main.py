@@ -62,7 +62,7 @@ class Game:
         self.is_run = True
         self.game_over = False
         self.screen = pg.display.set_mode(
-            (self.screen_width, self.screen_height))
+            (self.screen_width,self.screen_height), pg.FULLSCREEN|pg.SCALED)
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
