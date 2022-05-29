@@ -43,5 +43,3 @@ class Audio:
         self.thrust = pg.mixer.Sound(r'Assets\Audio\THRUST.WAV')
         self.bonus = pg.mixer.Sound(r'Assets\Audio\BONUS.WAV')
         self.levelup = pg.mixer.Sound(r'Assets\Audio\LEVELUP.WAV')
-        pg.mixer.music.load(r'Assets\Audio\DEFEAT.WAV')
-        pg.mixer.music.play(-1)
