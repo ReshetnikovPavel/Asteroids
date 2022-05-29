@@ -60,15 +60,16 @@ class Game:
         self.bonuses = []
         self.count = 0
         self.is_run = True
-        self.game_over = False
+        self.game_over = True
         self.screen = pg.display.set_mode(
             (self.screen_width,self.screen_height), pg.FULLSCREEN | pg.SCALED)
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
+        self.title_font = pygame.font.Font(r'Assets/Hyperspace.otf', 60)
         self.score_table = ScoreTable()
-        self.draw = self.draw_game
-        self.handle_events = self.handle_game_events
+        self.draw = self.draw_main_menu
+        self.handle_events = self.handle_menu_events
         self.player_name = ''
         self.double_score = 0
         self.level_info = LevelInfo(1, 1500, 0, 100, 1055, 1, 300)
@@ -236,6 +237,19 @@ class Game:
                              game.screen_width / 2 - press_enter_text.get_width() / 2,
                              game.screen_height - press_enter_text.get_height() - 30))
 
+    def draw_main_menu(self):
+        title_text = self.title_font.render('Asteroids', True,
+                                         (255, 255, 255))
+        press_enter_text = self.font.render('Press ENTER to start', True,
+                                           (255, 255, 255))
+
+        self.screen.blit(press_enter_text,
+                         (game.screen_width / 2 - press_enter_text.get_width() / 2,
+                          (game.screen_height - press_enter_text.get_height() - 30)*3/4))
+        self.screen.blit(title_text,
+                         (game.screen_width / 2 - title_text.get_width() / 2,
+                          (game.screen_height / 2 - title_text.get_height() / 2)))
+
     def end_game(self):
         self.game_over = True
         self.draw = self.draw_death_screen
@@ -244,6 +258,14 @@ class Game:
         pg.mixer.music.load(r'Assets\Audio\DEFEAT.WAV')
         pg.mixer.music.play(-1)
         print("You've met with a terrible fate, haven't you?")
+
+    def start_game(self):
+        self.draw = self.draw_game
+        self.handle_events = self.handle_game_events
+        self.game_over = False
+        pg.mixer.music.stop()
+        pg.mixer.music.load(r'Assets\Audio\MUSIC.WAV')
+        pg.mixer.music.play(-1)
 
     def handle_controls(self):
         keys = pg.key.get_pressed()
@@ -278,6 +300,12 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_RETURN:
                     self.__init__()
+
+    def handle_menu_events(self):
+        for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_RETURN:
+                    self.start_game()
 
     def loop_object(self, obj):
         if obj.position.x > self.screen_width + obj.height:
