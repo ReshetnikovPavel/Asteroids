@@ -75,7 +75,7 @@ class Game:
 
     def run(self):
         pg.display.set_caption('Asteroids')
-        while self.is_run:
+        while True:
             self.clock.tick(60)
             self.count += 1
             if self.player.lives < 0 and not self.game_over:
@@ -96,10 +96,9 @@ class Game:
             self.draw()
             pg.display.update()
 
-            for event in pg.event.get():
-                if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                    self.is_run = False
-        pg.quit()
+            keys = pg.key.get_pressed()
+            if keys[pg.K_ESCAPE]:
+                pg.quit()
 
     def update(self):
         self.level_info.check_next_level(self.count)
