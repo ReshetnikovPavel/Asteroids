@@ -1,15 +1,11 @@
 import random
 import pygame.math as m
-import pygame as pg
-import vectorRandom
-
-import collision
-from bullet import Bullet
 
 
 class Bonus:
     def __init__(self, game, spawn_point, direction):
-        self.activate = random.choice([Bonus.life_bonus, Bonus.score_bonus, Bonus.shield_bonus])
+        self.activate = random.choice(
+            [Bonus.life_bonus, Bonus.score_bonus, Bonus.shield_bonus])
         self.texture = Bonus.type_to_texture(game, self.activate)
         self.width = self.texture.get_width()
         self.height = self.texture.get_height()
@@ -44,7 +40,6 @@ class Bonus:
     @staticmethod
     def life_bonus(game):
         game.player.lives += 1
-
 
     @staticmethod
     def shield_bonus(game):

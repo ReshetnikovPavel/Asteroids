@@ -1,7 +1,8 @@
 import unittest
-import collision
+
 import pygame.math as pgm
-import asteroid
+
+import collision
 
 
 class TestCollisions(unittest.TestCase):

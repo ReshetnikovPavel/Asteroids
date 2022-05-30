@@ -1,50 +1,14 @@
-import pygame as pg
 import random
-import collision
-import Assets
+import pygame as pg
 import pygame.math
-from bullet import Bullet
+import Assets
+from asteroid import Asteroid
+from level_info import LevelInfo
 from player import Player
 from saucer import Saucer
-
-from asteroid import Asteroid
 from score_table import ScoreTable
 
 pygame.init()
-
-
-class LevelInfo:
-    def __init__(self, level_count, ticks_to_next_level,
-                 level_start_tick,
-                 asteroids_timing, saucer_timing,
-                 asteroid_speed_coefficient,
-                 saucer_fire_timing):
-
-        self.level_count = level_count
-        self.ticks_to_next_level = ticks_to_next_level
-        self.level_start_tick = level_start_tick
-        self.asteroids_timing = asteroids_timing
-        self.saucer_timing = saucer_timing
-        self.asteroid_speed_coefficient = asteroid_speed_coefficient
-        self.saucer_fire_timing = saucer_fire_timing
-
-    def move_to_next_level(self, level_start_tick):
-        self.level_count += 1
-        self.ticks_to_next_level *= 1.5
-        self.asteroids_timing //= 1.1
-        self.saucer_timing //= 1.1
-        self.asteroid_speed_coefficient *= 1.1
-        self.saucer_fire_timing //= 1.5
-        self.level_start_tick = level_start_tick
-        print(f'next level {self.level_count}')
-        print(f'asteroid_speed_coeff{self.asteroid_speed_coefficient}')
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.levelup)
-        game.score += (self.level_count-1)*10
-
-    def check_next_level(self, current_tick):
-        if current_tick - self.level_start_tick > self.ticks_to_next_level:
-            self.move_to_next_level(current_tick)
 
 
 class Game:
@@ -72,7 +36,7 @@ class Game:
         self.handle_events = self.handle_menu_events
         self.player_name = ''
         self.double_score = 0
-        self.level_info = LevelInfo(1, 1500, 0, 100, 1055, 1, 300)
+        self.level_info = LevelInfo(1, 1500, 0, 100, 1055, 1, 300, self)
 
     def run(self):
         pg.display.set_caption('Asteroids')
@@ -142,12 +106,14 @@ class Game:
     def draw_game(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
-        best_score_text = self.font.render('Best: ' + str(self.score_table.value), True,
-                                           (255, 255, 255))
+        best_score_text = self.font.render(
+            'Best: ' + str(self.score_table.value), True,
+            (255, 255, 255))
         lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
                                       (255, 255, 255))
-        level_text = self.font.render('Level ' + str(self.level_info.level_count), True,
-                                      (255, 255, 255))
+        level_text = self.font.render(
+            'Level ' + str(self.level_info.level_count), True,
+            (255, 255, 255))
         self.screen.blit(score_text,
                          (self.screen_width - 500,
                           35 + score_text.get_height()))
@@ -175,16 +141,18 @@ class Game:
     def draw_death_screen(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
-        best_score_text = self.font.render('Best: ' + str(self.score_table.value), True,
-                                           (255, 255, 255))
-        level_text = self.font.render('Level ' + str(self.level_info.level_count), True,
-                                      (255, 255, 255))
+        best_score_text = self.font.render(
+            'Best: ' + str(self.score_table.value), True,
+            (255, 255, 255))
+        level_text = self.font.render(
+            'Level ' + str(self.level_info.level_count), True,
+            (255, 255, 255))
         gameover_text = self.font.render('GAME OVER', True,
                                          (255, 255, 255))
         gameover_text_2 = self.font.render('Please enter your name:', True,
                                            (255, 255, 255))
         press_enter_text = self.font.render('(Press ENTER to continue)', True,
-                                           (255, 255, 255))
+                                            (255, 255, 255))
         name_text = self.font.render(self.player_name, True, (255, 255, 255))
         self.screen.blit(score_text,
                          (self.screen_width - 500,
@@ -195,22 +163,31 @@ class Game:
         self.screen.blit(level_text,
                          (self.screen_width - 20 - level_text.get_width(),
                           30))
-        self.screen.blit(gameover_text,
-                         (game.screen_width / 2 - gameover_text.get_width() / 2,
-                          game.screen_height / 2 - gameover_text.get_height() / 2 - 50))
-        self.screen.blit(gameover_text_2,
-                         (
-                         game.screen_width / 2 - gameover_text_2.get_width() / 2,
-                         game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height() - 50))
-        self.screen.blit(name_text,
-                         (
-                             game.screen_width / 2 - name_text.get_width() / 2,
-                             game.screen_height / 2 - gameover_text.get_height() / 2 + gameover_text_2.get_height()))
+        self.screen.blit(gameover_text, self._get_destination_for_text_header(
+            gameover_text.get_width(),
+            gameover_text.get_height(), -50))
+        self.screen.blit(gameover_text_2, self._get_destination_for_text_header(
+            gameover_text_2.get_width(),
+            gameover_text_2.get_height(), gameover_text_2.get_height() - 50))
+        self.screen.blit(name_text, self._get_destination_for_text_header(
+            name_text.get_width(),
+            gameover_text_2.get_height(), gameover_text_2.get_height()))
         if len(self.player_name) > 0:
-            self.screen.blit(press_enter_text,
-                             (
-                                 game.screen_width / 2 - press_enter_text.get_width() / 2,
-                                 game.screen_height - press_enter_text.get_height() - 30))
+            width = game.screen_width / 2 - press_enter_text.get_width() / 2
+            height = game.screen_height - press_enter_text.get_height() - 30
+            self.screen.blit(press_enter_text, (width, height))
+
+    @staticmethod
+    def _get_destination_for_text_header(width, height, offset_height):
+        return game.screen_width / 2 - width / 2, \
+               game.screen_height / 2 - height / 2 + offset_height
+
+    @staticmethod
+    def _get_destination_for_text_next_entry(width, height, i,
+                                             horizontal_spacing,
+                                             vertical_spacing):
+        return game.screen_width / 2 - width / 2 + horizontal_spacing, \
+               (vertical_spacing + height) * (i + 1)
 
     def draw_score_table(self):
         vertical_spacing = 30
@@ -223,19 +200,20 @@ class Game:
             score = str(self.score_table.scores[i][1])
             name_text = self.font.render(name, True, (255, 255, 255))
             score_text = self.font.render(score, True, (255, 255, 255))
-            entry_width = name_text.get_width() + score_text.get_width() + horizontal_spacing
+            entry_width = name_text.get_width() + score_text.get_width()
+            entry_width += horizontal_spacing
             self.screen.blit(name_text,
-                             (
-                                 game.screen_width / 2 - entry_width / 2,
-                                 (vertical_spacing+name_text.get_height())*(i+1)))
+                             self._get_destination_for_text_next_entry(
+                                 entry_width, name_text.get_height(), i,
+                                 0, vertical_spacing))
             self.screen.blit(score_text,
-                             (
-                                 game.screen_width / 2 - entry_width / 2 + horizontal_spacing,
-                                 (vertical_spacing + name_text.get_height()) * (i + 1)))
-        self.screen.blit(press_enter_text,
-                         (
-                             game.screen_width / 2 - press_enter_text.get_width() / 2,
-                             game.screen_height - press_enter_text.get_height() - 30))
+                             self._get_destination_for_text_next_entry(
+                                 entry_width, name_text.get_height(), i,
+                                 horizontal_spacing, vertical_spacing))
+
+        width = game.screen_width / 2 - press_enter_text.get_width() / 2
+        height = game.screen_height - press_enter_text.get_height() - 30
+        self.screen.blit(press_enter_text, (width, height))
 
     def draw_main_menu(self):
         title_text = self.title_font.render('Asteroids', True,
