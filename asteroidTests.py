@@ -1,9 +1,8 @@
-import unittest
-import pygame.math as pgm
 import copy
-
+import unittest
 import Assets
 import asteroid
+from level_info import LevelInfo
 
 
 class TestBullet(unittest.TestCase):
@@ -19,6 +18,7 @@ class TestBullet(unittest.TestCase):
             self.is_audio_on = is_audio_on
             self.count = count
             self.asteroids = []
+            self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
 
     def setUp(self):
         self.game = self.GameForTest(800, 800,
@@ -53,13 +53,5 @@ class TestBullet(unittest.TestCase):
         self.assertTrue(len(self.game.asteroids) == 0)
 
 
-
-
-
-
-
 if __name__ == '__main__':
     unittest.main()
-
-
-
