@@ -26,7 +26,7 @@ class Game:
         self.is_run = True
         self.game_over = True
         self.screen = pg.display.set_mode(
-            (self.screen_width,self.screen_height), pg.FULLSCREEN | pg.SCALED)
+            (self.screen_width, self.screen_height), pg.FULLSCREEN | pg.SCALED)
         self.player = Player(self)
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
@@ -217,16 +217,16 @@ class Game:
 
     def draw_main_menu(self):
         title_text = self.title_font.render('Asteroids', True,
-                                         (255, 255, 255))
+                                            (255, 255, 255))
         press_enter_text = self.font.render('Press ENTER to start', True,
-                                           (255, 255, 255))
+                                            (255, 255, 255))
 
-        self.screen.blit(press_enter_text,
-                         (game.screen_width / 2 - press_enter_text.get_width() / 2,
-                          (game.screen_height - press_enter_text.get_height() - 30)*3/4))
-        self.screen.blit(title_text,
-                         (game.screen_width / 2 - title_text.get_width() / 2,
-                          (game.screen_height / 2 - title_text.get_height() / 2)))
+        width = game.screen_width / 2 - press_enter_text.get_width() / 2
+        height = game.screen_height - press_enter_text.get_height() - 30
+        height *= 3 / 4
+        self.screen.blit(press_enter_text, (width, height))
+        self.screen.blit(title_text, self._get_destination_for_text_header(
+            title_text.get_width(), title_text.get_height(), 0))
 
     def end_game(self):
         self.game_over = True
