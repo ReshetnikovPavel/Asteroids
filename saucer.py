@@ -50,7 +50,7 @@ class Saucer:
         direction = (game.player.position - self.position).normalize()
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.fire)
-        self.bullets.append(Bullet(self, direction))
+        self.bullets.append(Bullet(self, direction, True))
 
     def change_direction(self):
         self.direction = m.Vector2(vectorRandom.make_rand_vector())

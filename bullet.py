@@ -3,7 +3,7 @@ import copy
 
 
 class Bullet:
-    def __init__(self, player, direction=None):
+    def __init__(self, player, direction=None, is_saucer=False):
         self.position = copy.copy(player.head)
         self.x = self.position.x
         self.y = self.position.y
@@ -15,6 +15,7 @@ class Bullet:
             self.direction = direction
         self.velocity = 10 * self.direction
         self.life = 100
+        self.is_saucer = is_saucer
 
     def update(self):
         self.position += self.velocity
@@ -27,7 +28,9 @@ class Bullet:
                or self.position.y < -50 or self.position.y > screen_height
 
     def draw(self, game):
-        if game.double_score > 0:
+        if self.is_saucer:
+            color = (231, 76, 60)
+        elif game.double_score > 0:
             color = (241, 196, 15)
         else:
             color = (255, 255, 255)
