@@ -39,8 +39,7 @@ class Saucer:
         if self.position.x > game.screen_width \
                 or self.position.y > game.screen_height:
             self.move_towards_center(game)
-
-        if game.count % game.level_info.saucer_fire_timing == 0:
+        elif game.count % game.level_info.saucer_fire_timing == 0:
             self.change_direction()
             self.fire(game)
         self.position.x += self.velocity.x
@@ -50,7 +49,9 @@ class Saucer:
         direction = (game.player.position - self.position).normalize()
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.fire)
-        self.bullets.append(Bullet(self, direction))
+        bullet = Bullet(self, direction)
+        bullet.velocity /= 2
+        self.bullets.append(bullet)
 
     def change_direction(self):
         self.direction = m.Vector2(vectorRandom.make_rand_vector())
