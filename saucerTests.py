@@ -1,10 +1,6 @@
 import unittest
-import player
+
 import Assets
-import bullet
-import copy
-import pygame.math as pgm
-import asteroid
 import saucer
 
 
@@ -28,8 +24,9 @@ class TestSaucer(unittest.TestCase):
                                      False, 0)
         self.saucer = saucer.Saucer(self.game)
 
-
     def TestMoveNormal(self):
         pass
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,7 @@ import bullet
 import copy
 import pygame.math as pgm
 import asteroid
+from level_info import LevelInfo
 
 
 class TestPlayer(unittest.TestCase):
@@ -20,6 +21,7 @@ class TestPlayer(unittest.TestCase):
             self.is_audio_on = is_audio_on
             self.count = count
             self.asteroids = []
+            self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
 
     def setUp(self):
         self.game = self.GameForTest(800, 800,
