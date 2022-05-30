@@ -9,7 +9,10 @@ class Bullet:
         self.y = self.position.y
         self.width = 4
         self.height = 4
-        self.direction = player.direction
+        if direction is None:
+            self.direction = player.direction
+        else:
+            self.direction = direction
         self.velocity = 10 * self.direction
         self.life = 100
 

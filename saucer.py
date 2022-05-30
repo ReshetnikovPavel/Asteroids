@@ -47,7 +47,7 @@ class Saucer:
         self.position.y += self.velocity.y
 
     def fire(self, game):
-        direction = game.player.position - self.position  # TODO
+        direction = (game.player.position - self.position).normalize()
         if game.is_audio_on:
             pg.mixer.Sound.play(game.audio.fire)
         self.bullets.append(Bullet(self, direction))
@@ -57,18 +57,16 @@ class Saucer:
         self.velocity = m.Vector2(self.direction.x * random.randrange(1, 3),
                                   self.direction.y * random.randrange(1, 3))
 
-    def check_asteroid_collision(self, game):
-        for asteroid in game.asteroids:
-            if collision.check_collision(self, asteroid):
-                asteroid.explode(game)
-                self.explode(game)
+    def check_asteroid_collision(self, game, asteroid):
+        if collision.check_collision(self, asteroid):
+            asteroid.explode(game)
+            self.explode(game)
 
-    def check_bullet_collision(self, game):
-        for bullet in game.player.bullets:
-            if collision.check_collision(self, bullet):
-                self.explode(game)
-                game.score += 5 * game.get_score_multiplier()
-                game.player.bullets.remove(bullet)
+    def check_bullet_collision(self, game, bullet):
+        if collision.check_collision(self, bullet):
+            self.explode(game)
+            game.score += 5 * game.get_score_multiplier()
+            game.player.bullets.remove(bullet)
 
     def explode(self, game):
         if self in game.saucers:

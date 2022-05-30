@@ -82,8 +82,10 @@ class Game:
             asteroid.move()
 
         for saucer in self.saucers:
-            saucer.check_asteroid_collision(self)
-            saucer.check_bullet_collision(self)
+            for asteroid in game.asteroids:
+                saucer.check_asteroid_collision(self, asteroid)
+            for bullet in game.player.bullets:
+                saucer.check_bullet_collision(self, bullet)
             self.player.check_asteroid_collision(self, saucer)
             saucer.move(self)
             for bullet in saucer.bullets:
