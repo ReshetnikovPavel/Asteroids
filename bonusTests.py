@@ -54,8 +54,5 @@ class TestBonus(unittest.TestCase):
         self.assertGreater(self.game.double_score, init_score)
 
 
-
-
-
 if __name__ == '__main__':
     unittest.main()

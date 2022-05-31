@@ -81,8 +81,5 @@ class TestSaucer(unittest.TestCase):
         self.assertTrue(abs(expected_direction.y - actual_direction.y) < 0.1)
 
 
-
-
-
 if __name__ == '__main__':
     unittest.main()

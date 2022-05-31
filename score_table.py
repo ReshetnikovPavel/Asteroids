@@ -23,4 +23,3 @@ class ScoreTable:
             if len(self.scores) > self.entries_count:
                 self.scores.pop()
             f["score_list"] = self.scores
-

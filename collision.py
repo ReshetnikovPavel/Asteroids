@@ -57,8 +57,3 @@ def _is_point_in_box(box_object, point):
     y = box_object.position.y
     width = box_object.width
     return x <= point.x <= x + width and y <= point.y <= y + width
-
-
-
-
-

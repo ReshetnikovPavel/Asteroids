@@ -165,12 +165,15 @@ class Game:
         self.screen.blit(level_text,
                          (self.screen_width - 20 - level_text.get_width(),
                           30))
-        self.screen.blit(gameover_text, self._get_destination_for_text_header(
-            gameover_text.get_width(),
-            gameover_text.get_height(), -50))
-        self.screen.blit(gameover_text_2, self._get_destination_for_text_header(
-            gameover_text_2.get_width(),
-            gameover_text_2.get_height(), gameover_text_2.get_height() - 50))
+        self.screen.blit(gameover_text,
+                         self._get_destination_for_text_header(
+                             gameover_text.get_width(),
+                             gameover_text.get_height(), -50))
+        self.screen.blit(gameover_text_2,
+                         self._get_destination_for_text_header(
+                             gameover_text_2.get_width(),
+                             gameover_text_2.get_height(),
+                             gameover_text_2.get_height() - 50))
         self.screen.blit(name_text, self._get_destination_for_text_header(
             name_text.get_width(),
             gameover_text_2.get_height(), gameover_text_2.get_height()))

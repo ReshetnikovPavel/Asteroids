@@ -50,8 +50,8 @@ class TestCollisions(unittest.TestCase):
 
     def testPointOutsideTriangleCollision(self):
         point = pgm.Vector2(20, 20)
-        self.assertFalse(collision._is_point_in_triangle(self.triangle_vertices,
-                                                         point))
+        self.assertFalse(
+            collision._is_point_in_triangle(self.triangle_vertices, point))
 
     def testPointOnBorderTriangleCollision(self):
         point1 = pgm.Vector2(2, 0)
@@ -83,8 +83,8 @@ class TestCollisions(unittest.TestCase):
         box = self.BoxForTest(position=pgm.Vector2(0, 0),
                               width=8,
                               height=5)
-        self.assertTrue(collision.check_player_triangular_collision(self.player,
-                                                                    box))
+        self.assertTrue(
+            collision.check_player_triangular_collision(self.player, box))
 
     def testPlayerTriangleAndBoxDoNotCollideCollision(self):
         box = self.BoxForTest(position=pgm.Vector2(100, 100),

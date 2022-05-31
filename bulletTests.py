@@ -29,17 +29,16 @@ class TestBullet(unittest.TestCase):
         screen_width = 100
         screen_height = 100
         self.bullet.position = pgm.Vector2(200, 200)
-        self.assertTrue(self.bullet.is_off_screen(screen_width, screen_height))
+        self.assertTrue(
+            self.bullet.is_off_screen(screen_width, screen_height))
 
     def testIsNotOffScreen(self):
         screen_width = 100
         screen_height = 100
         self.bullet.position = pgm.Vector2(0, 0)
-        self.assertFalse(self.bullet.is_off_screen(screen_width, screen_height))
+        self.assertFalse(
+            self.bullet.is_off_screen(screen_width, screen_height))
 
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
