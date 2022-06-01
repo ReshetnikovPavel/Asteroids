@@ -1,7 +1,8 @@
 import unittest
 from level_info import LevelInfo
 
-class TestScoreTable(unittest.TestCase):
+
+class TestLevelInfo(unittest.TestCase):
     class GameForTest:
         def __init__(self):
             self.is_audio_on = False

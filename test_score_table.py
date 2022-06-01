@@ -3,6 +3,7 @@ import unittest
 import shelve
 import copy
 
+
 class TestScoreTable(unittest.TestCase):
     def setUp(self):
         self.path = "score_testing.txt"
