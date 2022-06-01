@@ -4,8 +4,42 @@ import Assets
 import bullet
 import copy
 import pygame.math as pgm
+import pygame
 import asteroid
 from level_info import LevelInfo
+
+
+class TextureForTest:
+    def __init__(self):
+        self.width = 10
+        self.height = 10
+
+    def get_width(self):
+        return self.width
+
+    def get_height(self):
+        return self.height
+
+
+class TexturesForTest:
+    def __init__(self):
+        self.player = pygame.Surface((10, 10))
+        self.asteroids_medium = [pygame.Surface((10, 10)),
+                                 pygame.Surface((10, 10)),
+                                 pygame.Surface((10, 10)),
+                                 pygame.Surface((10, 10)),
+                                 pygame.Surface((10, 10))]
+        self.asteroids_small = [pygame.Surface((10, 10)),
+                                pygame.Surface((10, 10)),
+                                pygame.Surface((10, 10)),
+                                pygame.Surface((10, 10)),
+                                pygame.Surface((10, 10))]
+
+        self.asteroids_big = [pygame.Surface((10, 10)),
+                              pygame.Surface((10, 10)),
+                              pygame.Surface((10, 10)),
+                              pygame.Surface((10, 10)),
+                              pygame.Surface((10, 10))]
 
 
 class TestPlayer(unittest.TestCase):
@@ -25,7 +59,7 @@ class TestPlayer(unittest.TestCase):
 
     def setUp(self):
         self.game = self.GameForTest(800, 800,
-                                     Assets.Textures(), Assets.Audio(),
+                                     TexturesForTest(), Assets.Audio(),
                                      False, 0)
         self.player = player.Player(self.game)
 
