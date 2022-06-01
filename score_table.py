@@ -2,9 +2,10 @@ import shelve
 
 
 class ScoreTable:
-    def __init__(self):
+    def __init__(self, file_path):
         self.entries_count = 8
-        with shelve.open("score.txt") as f:
+        self.file_path = file_path
+        with shelve.open(file_path) as f:
             if "best_score" not in f:
                 f["best_score"] = 0
             if "score_list" not in f:
@@ -13,7 +14,7 @@ class ScoreTable:
             self.scores = f["score_list"]
 
     def update_score(self, value, player_name):
-        with shelve.open("score.txt") as f:
+        with shelve.open(self.file_path) as f:
             if value > self.value:
                 self.value = value
                 f["best_score"] = value

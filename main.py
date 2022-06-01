@@ -31,7 +31,7 @@ class Game:
         self.score = 0
         self.font = pygame.font.Font(r'Assets/Hyperspace.otf', 36)
         self.title_font = pygame.font.Font(r'Assets/Hyperspace.otf', 60)
-        self.score_table = ScoreTable()
+        self.score_table = ScoreTable("score.txt")
         self.draw = self.draw_main_menu
         self.handle_events = self.handle_menu_events
         self.player_name = ''
