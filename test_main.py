@@ -6,6 +6,7 @@ from bonus import Bonus
 from player import Player
 import pygame.math as m
 import unittest
+import Assets
 import copy
 import pygame as pg
 
@@ -88,10 +89,13 @@ class TestGame(unittest.TestCase):
         bonus = Bonus(game, m.Vector2(0, 0), m.Vector2(0, 0))
         bonus.velocity = m.Vector2(1, 0)
         game.bonuses.append(bonus)
+        game.double_score = 1
         game.update()
         self.assertEqual(m.Vector2(1, 0), asteroid.position)
         self.assertEqual(m.Vector2(400, 380), bullet.position)
         self.assertEqual(m.Vector2(1, 0), bonus.position)
+        self.assertEqual(game.count, 1)
+        self.assertEqual(0, game.double_score)
 
     def testInRun(self):
         game = Game()
@@ -128,8 +132,20 @@ class TestGame(unittest.TestCase):
         self.assertTrue(True)
 
     def test_init(self):
-        self.game.__init__()
-        self.assertTrue(True)
+        game = Game()
+        game.__init__()
+        self.assertEqual(False, game.is_audio_on)
+        self.assertEqual(800, game.screen_width)
+        self.assertEqual(800, game.screen_height)
+        self.assertEqual([], game.saucers)
+        self.assertEqual([], game.asteroids)
+        self.assertEqual([], game.bonuses)
+        self.assertEqual(0, game.count)
+        self.assertEqual(0, game.score)
+        self.assertEqual('', game.player_name)
+        self.assertEqual(0, game.double_score)
+        self.assertEqual(0, game.elements_drawn)
+        self.assertEqual(0, game.score_entries_drawn)
 
 
 if __name__ == '__main__':

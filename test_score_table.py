@@ -21,7 +21,8 @@ class TestScoreTable(unittest.TestCase):
     def test_init(self):
         self.score_table.scores = []
         self.score_table.__init__("score_testing.txt")
-        self.assertTrue(True)
+        self.assertEqual(8, self.score_table.entries_count)
+        self.assertEqual("score_testing.txt", self.score_table.file_path)
 
 
 if __name__ == '__main__':
