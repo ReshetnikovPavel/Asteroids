@@ -77,7 +77,7 @@ class Game:
 
         for asteroid in self.asteroids:
             asteroid.check_bullet_collision(self)
-            self.player.check_asteroid_collision(game, asteroid)
+            self.player.check_asteroid_collision(self, asteroid)
             self.loop_object(asteroid)
             asteroid.move()
 
@@ -96,9 +96,9 @@ class Game:
                     saucer.bullets.remove(bullet)
 
         for bonus in self.bonuses:
-            bonus.move(game)
+            bonus.move(self)
             self.loop_object(bonus)
-            self.player.check_bonus_collision(game, bonus)
+            self.player.check_bonus_collision(self, bonus)
             if bonus.life <= 0:
                 self.bonuses.remove(bonus)
 
