@@ -94,7 +94,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(m.Vector2(1, 0), asteroid.position)
         self.assertEqual(m.Vector2(400, 380), bullet.position)
         self.assertEqual(m.Vector2(1, 0), bonus.position)
-        self.assertEqual(game.count, 1)
+        self.assertEqual(game.count, 0)
         self.assertEqual(0, game.double_score)
 
     def testInRun(self):
@@ -126,10 +126,22 @@ class TestGame(unittest.TestCase):
         s.bullets.append(Bullet(s))
         self.game.draw_game()
         self.assertEqual(self.game.elements_drawn, 5)
+        self.assertEqual(174, self.game.score_text.get_width())
+        self.assertEqual(176, self.game.lives_text.get_width())
+        self.assertEqual(154, self.game.best_score_text.get_width())
 
     def testDrawScoreTable(self):
         self.game.draw_score_table()
         self.assertTrue(True)
+
+    def test_draw_death_screen(self):
+        self.game.draw_death_screen()
+        self.assertEqual(174, self.game.score_text.get_width())
+        self.assertEqual(154, self.game.best_score_text.get_width())
+        self.assertEqual(198, self.game.gameover_text.get_width())
+        self.assertEqual(506, self.game.gameover_text_2.get_width())
+        self.assertEqual(548, self.game.press_enter_text.get_width())
+        self.assertEqual(0, self.game.name_text.get_width())
 
     def test_init(self):
         game = Game()
