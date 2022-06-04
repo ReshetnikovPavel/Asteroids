@@ -4,7 +4,7 @@ import Assets
 import bullet
 import copy
 import pygame.math as pgm
-import pygame
+import pygame as pg
 import asteroid
 from level_info import LevelInfo
 
@@ -23,23 +23,23 @@ class TextureForTest:
 
 class TexturesForTest:
     def __init__(self):
-        self.player = pygame.Surface((10, 10))
-        self.asteroids_medium = [pygame.Surface((10, 10)),
-                                 pygame.Surface((10, 10)),
-                                 pygame.Surface((10, 10)),
-                                 pygame.Surface((10, 10)),
-                                 pygame.Surface((10, 10))]
-        self.asteroids_small = [pygame.Surface((10, 10)),
-                                pygame.Surface((10, 10)),
-                                pygame.Surface((10, 10)),
-                                pygame.Surface((10, 10)),
-                                pygame.Surface((10, 10))]
+        self.player = pg.Surface((10, 10))
+        self.asteroids_medium = [pg.Surface((10, 10)),
+                                 pg.Surface((10, 10)),
+                                 pg.Surface((10, 10)),
+                                 pg.Surface((10, 10)),
+                                 pg.Surface((10, 10))]
+        self.asteroids_small = [pg.Surface((10, 10)),
+                                pg.Surface((10, 10)),
+                                pg.Surface((10, 10)),
+                                pg.Surface((10, 10)),
+                                pg.Surface((10, 10))]
 
-        self.asteroids_big = [pygame.Surface((10, 10)),
-                              pygame.Surface((10, 10)),
-                              pygame.Surface((10, 10)),
-                              pygame.Surface((10, 10)),
-                              pygame.Surface((10, 10))]
+        self.asteroids_big = [pg.Surface((10, 10)),
+                              pg.Surface((10, 10)),
+                              pg.Surface((10, 10)),
+                              pg.Surface((10, 10)),
+                              pg.Surface((10, 10))]
 
 
 class TestPlayer(unittest.TestCase):
@@ -58,6 +58,7 @@ class TestPlayer(unittest.TestCase):
             self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
 
     def setUp(self):
+        pg.mixer.init()
         self.game = self.GameForTest(800, 800,
                                      TexturesForTest(), Assets.Audio(),
                                      False, 0)

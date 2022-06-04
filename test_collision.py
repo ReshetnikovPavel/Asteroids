@@ -1,7 +1,6 @@
 import unittest
-
+import pygame as pg
 import pygame.math as pgm
-
 import collision
 
 
@@ -20,6 +19,7 @@ class TestCollisions(unittest.TestCase):
             self.height = height
 
     def setUp(self):
+        pg.mixer.init()
         self.box = self.BoxForTest(position=pgm.Vector2(0, 0),
                                    width=10,
                                    height=10)

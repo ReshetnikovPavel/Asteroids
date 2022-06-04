@@ -3,6 +3,7 @@ import unittest
 import Assets
 import asteroid
 from level_info import LevelInfo
+import pygame as pg
 
 
 class TestBullet(unittest.TestCase):
@@ -21,6 +22,7 @@ class TestBullet(unittest.TestCase):
             self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
 
     def setUp(self):
+        pg.mixer.init()
         self.game = self.GameForTest(800, 800,
                                      Assets.Textures(), Assets.Audio(),
                                      False, 0)

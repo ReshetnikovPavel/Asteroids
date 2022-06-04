@@ -1,5 +1,6 @@
 import unittest
 import bullet
+import pygame as pg
 import pygame.math as pgm
 import copy
 
@@ -13,6 +14,7 @@ class TestBullet(unittest.TestCase):
             self.height = height
 
     def setUp(self):
+        pg.mixer.init()
         player = self.PlayerForTest(
             pgm.Vector2(0, 0),
             pgm.Vector2(10, 10), 1, 1)

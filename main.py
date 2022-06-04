@@ -13,7 +13,7 @@ pygame.init()
 
 class Game:
     def __init__(self):
-        self.is_audio_on = True
+        self.is_audio_on = False
         self.textures = Assets.Textures()
         self.audio = Assets.Audio()
         self.screen_width = 800
