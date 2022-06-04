@@ -48,24 +48,20 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.draw_game, game.draw)
         self.assertEqual(game.handle_game_events, game.handle_events)
 
-    # def testRun(self):
-    #    game = Game()
-    #    init_count = game.count
-    #    game.game_over = False
-    #    game.run()
-    #    game.is_endless_cycle = False
-    #    pg.quit()
-#
-    #    self.assertGreater(game.count, init_count)
-    #    game.count = game.level_info.asteroids_timing
-    #    game.run()
-    #    pg.quit()
+        # def testRun(self):
+        #    game = Game()
+        #    init_count = game.count
+        #    game.game_over = False
+        #    game.run()
+        #    game.is_endless_cycle = False
+        #    pg.quit()
+        #
+        #    self.assertGreater(game.count, init_count)
+        #    game.count = game.level_info.asteroids_timing
+        #    game.run()
+        #    pg.quit()
 
-        self.assertTrue(len(game.asteroids) > 0)
-
-
-
-
+        # self.assertTrue(len(game.asteroids) > 0)
 
     def test_loop_object(self):
         game = Game()
