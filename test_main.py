@@ -127,6 +127,10 @@ class TestGame(unittest.TestCase):
         self.game.draw_score_table()
         self.assertTrue(self.game.score_entries_drawn > 0)
 
+    def test_init(self):
+        self.game.__init__()
+        self.assertTrue(True)
+
 
 if __name__ == '__main__':
     unittest.main()

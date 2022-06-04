@@ -18,6 +18,12 @@ class TestScoreTable(unittest.TestCase):
         actual = self.score_table.scores
         self.assertEqual(expected, actual)
 
+    def test_init(self):
+        self.score_table.scores = []
+        self.score_table.__init__("score_testing.txt")
+        self.assertTrue(True)
+
+
 
 if __name__ == '__main__':
     unittest.main()
