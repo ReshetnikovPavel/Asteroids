@@ -120,12 +120,15 @@ class Game:
 
     def draw_game(self):
         try:
-            self.score_text = self.font.render('Score: ' + str(self.score), True,
+            self.score_text = self.font.render('Score: ' + str(self.score),
+                                               True,
                                           (255, 255, 255))
             self.best_score_text = self.font.render(
-                'Best: ' + str(self.score_table.value), True,
+                'Best: ' + str(self.score_table.value),
+                True,
                 (255, 255, 255))
-            self.lives_text = self.font.render('Lives: ' + str(self.player.lives),
+            self.lives_text = self.font.render('Lives: ' +
+                                               str(self.player.lives),
                                           True,
                                           (255, 255, 255))
             level_text = self.font.render(
@@ -138,7 +141,8 @@ class Game:
                              (self.screen_width - 500,
                               30))
             self.screen.blit(level_text,
-                             (self.screen_width - 20 - level_text.get_width(),
+                             (self.screen_width - 20 -
+                              level_text.get_width(),
                               30))
             self.screen.blit(self.lives_text,
                              (20,
@@ -182,21 +186,29 @@ class Game:
         self.elements_drawn += 1
 
     def draw_death_screen(self):
-        self.score_text = self.font.render('Score: ' + str(self.score), True,
+        self.score_text = \
+            self.font.render('Score: ' + str(self.score), True,
                                       (255, 255, 255))
-        self.best_score_text = self.font.render(
-            'Best: ' + str(self.score_table.value), True,
+        self.best_score_text = \
+            self.font.render(
+                'Best: ' + str(self.score_table.value), True,
             (255, 255, 255))
-        self.level_text = self.font.render(
-            'Level ' + str(self.level_info.level_count), True,
+        self.level_text = \
+            self.font.render(
+                'Level ' + str(self.level_info.level_count), True,
             (255, 255, 255))
-        self.gameover_text = self.font.render('GAME OVER', True,
+        self.gameover_text = \
+            self.font.render('GAME OVER', True,
                                          (255, 255, 255))
-        self.gameover_text_2 = self.font.render('Please enter your name:', True,
+        self.gameover_text_2 = \
+            self.font.render('Please enter your name:', True,
                                            (255, 255, 255))
-        self.press_enter_text = self.font.render('(Press ENTER to continue)', True,
+        self.press_enter_text = \
+            self.font.render('(Press ENTER to continue)', True,
                                             (255, 255, 255))
-        self.name_text = self.font.render(self.player_name, True, (255, 255, 255))
+        self.name_text = \
+            self.font.render(self.player_name, True, (255, 255, 255))
+
         self.screen.blit(self.score_text,
                          (self.screen_width - 500,
                           35 + self.score_text.get_height()))

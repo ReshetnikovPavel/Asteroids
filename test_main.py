@@ -132,7 +132,7 @@ class TestGame(unittest.TestCase):
 
     def testDrawScoreTable(self):
         self.game.draw_score_table()
-        self.assertTrue(True)
+        self.assertEqual(self.game.score_entries_drawn, 0)
 
     def test_draw_death_screen(self):
         self.game.draw_death_screen()
