@@ -7,7 +7,6 @@ class LevelInfo:
                  asteroids_timing, saucer_timing,
                  asteroid_speed_coefficient,
                  saucer_fire_timing, game):
-
         self.level_count = level_count
         self.ticks_to_next_level = ticks_to_next_level
         self.level_start_tick = level_start_tick
@@ -27,8 +26,8 @@ class LevelInfo:
         self.level_start_tick = level_start_tick
         # print(f'next level {self.level_count}')
         # print(f'asteroid_speed_coeff{self.asteroid_speed_coefficient}')
-        if self.game.is_audio_on:
-            pg.mixer.Sound.play(self.game.audio.levelup)
+        # if self.game.is_audio_on:
+        #    pg.mixer.Sound.play(self.game.audio.levelup)
         self.game.score += (self.level_count - 1) * 10
 
     def check_next_level(self, current_tick):

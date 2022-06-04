@@ -33,16 +33,17 @@ class Textures:
 
 class Audio:
     def __init__(self):
-        pg.mixer.init()
-        self.explodes = [
-            pg.mixer.Sound('Assets/Audio/EXPLODE1.WAV'),
-            pg.mixer.Sound('Assets/Audio/EXPLODE2.WAV'),
-            pg.mixer.Sound('Assets/Audio/EXPLODE3.WAV')]
-        self.fire = pg.mixer.Sound('Assets/Audio/FIRE.WAV')
-        self.life = pg.mixer.Sound('Assets/Audio/LIFE.WAV')
-        self.l_saucer = pg.mixer.Sound('Assets/Audio/LSAUCER.WAV')
-        self.s_fire = pg.mixer.Sound('Assets/Audio/SFIRE.WAV')
-        self.s_saucer = pg.mixer.Sound('Assets/Audio/SSAUCER.WAV')
-        self.thrust = pg.mixer.Sound('Assets/Audio/THRUST.WAV')
-        self.bonus = pg.mixer.Sound('Assets/Audio/BONUS.WAV')
-        self.levelup = pg.mixer.Sound('Assets/Audio/LEVELUP.WAV')
+        pass
+        # pg.mixer.init()
+        # self.explodes = [
+        #    pg.mixer.Sound('Assets/Audio/EXPLODE1.WAV'),
+        #    pg.mixer.Sound('Assets/Audio/EXPLODE2.WAV'),
+        #    pg.mixer.Sound('Assets/Audio/EXPLODE3.WAV')]
+        # self.fire = pg.mixer.Sound('Assets/Audio/FIRE.WAV')
+        # self.life = pg.mixer.Sound('Assets/Audio/LIFE.WAV')
+        # self.l_saucer = pg.mixer.Sound('Assets/Audio/LSAUCER.WAV')
+        # self.s_fire = pg.mixer.Sound('Assets/Audio/SFIRE.WAV')
+        # self.s_saucer = pg.mixer.Sound('Assets/Audio/SSAUCER.WAV')
+        # self.thrust = pg.mixer.Sound('Assets/Audio/THRUST.WAV')
+        # self.bonus = pg.mixer.Sound('Assets/Audio/BONUS.WAV')
+        # self.levelup = pg.mixer.Sound('Assets/Audio/LEVELUP.WAV')

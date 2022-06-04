@@ -69,15 +69,15 @@ class Player:
         self.position += self.velocity
 
     def move_forward(self, game):
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.thrust)
+        # if game.is_audio_on:
+        #    pg.mixer.Sound.play(game.audio.thrust)
         self.velocity += self.direction.normalize() * self.acceleration
         if self.velocity.length() > self.max_speed:
             self.velocity = self.velocity.normalize() * self.max_speed
 
     def fire(self, game):
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.fire)
+        # if game.is_audio_on:
+        #    pg.mixer.Sound.play(game.audio.fire)
         self.bullets.append(Bullet(self))
 
     def check_asteroid_collision(self, game, asteroid):
@@ -99,8 +99,8 @@ class Player:
         if self.is_invincible or self.shield > 0:
             return
         if collision.check_player_triangular_collision(self, bullet):
-            if game.is_audio_on:
-                pg.mixer.Sound.play(game.audio.explodes[2])
+            # if game.is_audio_on:
+            #    pg.#.Sound.play(game.audio.explodes[2])
             self.lives -= 1
             self.die(game)
 
@@ -109,8 +109,8 @@ class Player:
             game.bonuses.remove(bonus)
             bonus.activate(game)
             game.score += 3 * game.get_score_multiplier()
-            if game.is_audio_on:
-                pg.mixer.Sound.play(game.audio.bonus)
+            # if game.is_audio_on:
+            #    pg.mixer.Sound.play(game.audio.bonus)
 
     def die(self, game):
         self.reset(game)

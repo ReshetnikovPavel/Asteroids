@@ -5,7 +5,6 @@ import pygame as pg
 
 class TestScoreTable(unittest.TestCase):
     def setUp(self):
-        pg.mixer.init()
         self.path = "score_testing.txt"
         self.score_table = ScoreTable(self.path)
 

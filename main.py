@@ -237,18 +237,18 @@ class Game:
         self.game_over = True
         self.draw = self.draw_death_screen
         self.handle_events = self.handle_death_events
-        pg.mixer.music.stop()
-        pg.mixer.music.load(r'Assets\Audio\DEFEAT.WAV')
-        pg.mixer.music.play(-1)
+        # pg.mixer.music.stop()
+        # pg.mixer.music.load(r'Assets\Audio\DEFEAT.WAV')
+        # pg.mixer.music.play(-1)
         print("You've met with a terrible fate, haven't you?")
 
     def start_game(self):
         self.draw = self.draw_game
         self.handle_events = self.handle_game_events
         self.game_over = False
-        pg.mixer.music.stop()
-        pg.mixer.music.load(r'Assets\Audio\MUSIC.WAV')
-        pg.mixer.music.play(-1)
+        # pg.mixer.music.stop()
+        # pg.mixer.music.load(r'Assets\Audio\MUSIC.WAV')
+        # pg.mixer.music.play(-1)
 
     def handle_controls(self):
         keys = pg.key.get_pressed()
@@ -308,5 +308,7 @@ class Game:
 
 
 # On start
-game = Game()
-game.run()
+if __name__ == '__main__':
+    game = Game()
+    game.run()
+

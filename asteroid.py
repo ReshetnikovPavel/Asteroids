@@ -56,8 +56,8 @@ class Asteroid:
     def explode(self, game):
         if self in game.asteroids:
             game.asteroids.remove(self)
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.explodes[self.rank - 1])
+        # if game.is_audio_on:
+        #    pg.mixer.Sound.play(game.audio.explodes[self.rank - 1])
         if self.rank > 1:
             random_vec = vectorRandom.make_rand_vector()
             random_dir = m.Vector2(random_vec[0], random_vec[1])

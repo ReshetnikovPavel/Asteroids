@@ -28,7 +28,6 @@ class TestBonus(unittest.TestCase):
             self.double_score = 0
 
     def setUp(self):
-        pg.mixer.init()
         self.game = self.GameForTest(800, 800,
                                      Assets.Textures(), Assets.Audio(),
                                      False, 0)

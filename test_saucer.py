@@ -26,10 +26,8 @@ class TestSaucer(unittest.TestCase):
             self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
             self.bonuses = []
             self.player = player.Player(self)
-            pg.mixer.init()
 
     def setUp(self):
-        pg.mixer.init()
         self.game = self.GameForTest(800, 800,
                                      Assets.Textures(), Assets.Audio(),
                                      False, 0)

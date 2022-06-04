@@ -10,7 +10,6 @@ class TestLevelInfo(unittest.TestCase):
             self.score = 0
 
     def setUp(self):
-        pg.mixer.init()
         self.game = self.GameForTest()
         self.level_info = LevelInfo(1, 1, 0, 11, 11, 1, 15, self.game)
 

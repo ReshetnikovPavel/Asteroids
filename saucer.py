@@ -1,6 +1,5 @@
 import random
 import pygame.math as m
-import pygame as pg
 import vectorRandom
 
 import collision
@@ -47,8 +46,8 @@ class Saucer:
 
     def fire(self, game):
         direction = (game.player.position - self.position).normalize()
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.fire)
+        # if game.is_audio_on:
+        #    pg.mixer.Sound.play(game.audio.fire)
         bullet = Bullet(self, direction, True)
         bullet.velocity /= 2
         self.bullets.append(bullet)
@@ -73,8 +72,8 @@ class Saucer:
         if self in game.saucers:
             game.saucers.remove(self)
             game.bonuses.append(Bonus(game, self.position, self.direction))
-        if game.is_audio_on:
-            pg.mixer.Sound.play(game.audio.explodes[2])
+        # if game.is_audio_on:
+        #    pg.mixer.Sound.play(game.audio.explodes[2])
 
     def move_towards_center(self, game):
         center = m.Vector2(game.screen_width / 2, game.screen_height / 2)
