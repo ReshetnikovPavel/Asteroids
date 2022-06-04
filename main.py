@@ -82,9 +82,9 @@ class Game:
             asteroid.move()
 
         for saucer in self.saucers:
-            for asteroid in game.asteroids:
+            for asteroid in self.asteroids:
                 saucer.check_asteroid_collision(self, asteroid)
-            for bullet in game.player.bullets:
+            for bullet in self.player.bullets:
                 saucer.check_bullet_collision(self, bullet)
             self.player.check_asteroid_collision(self, saucer)
             saucer.move(self)
@@ -131,14 +131,14 @@ class Game:
         for asteroid in self.asteroids:
             asteroid.draw(self.screen)
         for bullet in self.player.bullets:
-            bullet.draw(game)
+            bullet.draw(self)
         for saucer in self.saucers:
             saucer.draw(self.screen)
             for bullet in saucer.bullets:
-                bullet.draw(game)
+                bullet.draw(self)
         for bonus in self.bonuses:
-            bonus.draw(game)
-        self.player.draw(game)
+            bonus.draw(self)
+        self.player.draw(self)
 
     def draw_death_screen(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
@@ -178,20 +178,18 @@ class Game:
             name_text.get_width(),
             gameover_text_2.get_height(), gameover_text_2.get_height()))
         if len(self.player_name) > 0:
-            width = game.screen_width / 2 - press_enter_text.get_width() / 2
-            height = game.screen_height - press_enter_text.get_height() - 30
+            width = self.screen_width / 2 - press_enter_text.get_width() / 2
+            height = self.screen_height - press_enter_text.get_height() - 30
             self.screen.blit(press_enter_text, (width, height))
 
-    @staticmethod
-    def _get_destination_for_text_header(width, height, offset_height):
-        return game.screen_width / 2 - width / 2, \
-               game.screen_height / 2 - height / 2 + offset_height
+    def _get_destination_for_text_header(self, width, height, offset_height):
+        return self.screen_width / 2 - width / 2, \
+               self.screen_height / 2 - height / 2 + offset_height
 
-    @staticmethod
-    def _get_destination_for_text_next_entry(width, height, i,
+    def _get_destination_for_text_next_entry(self, width, height, i,
                                              horizontal_spacing,
                                              vertical_spacing):
-        return game.screen_width / 2 - width / 2 + horizontal_spacing, \
+        return self.screen_width / 2 - width / 2 + horizontal_spacing, \
                (vertical_spacing + height) * (i + 1)
 
     def draw_score_table(self):
@@ -216,8 +214,8 @@ class Game:
                                  entry_width, name_text.get_height(), i,
                                  horizontal_spacing, vertical_spacing))
 
-        width = game.screen_width / 2 - press_enter_text.get_width() / 2
-        height = game.screen_height - press_enter_text.get_height() - 30
+        width = self.screen_width / 2 - press_enter_text.get_width() / 2
+        height = self.screen_height - press_enter_text.get_height() - 30
         self.screen.blit(press_enter_text, (width, height))
 
     def draw_main_menu(self):
@@ -226,8 +224,8 @@ class Game:
         press_enter_text = self.font.render('Press ENTER to start', True,
                                             (255, 255, 255))
 
-        width = game.screen_width / 2 - press_enter_text.get_width() / 2
-        height = game.screen_height - press_enter_text.get_height() - 30
+        width = self.screen_width / 2 - press_enter_text.get_width() / 2
+        height = self.screen_height - press_enter_text.get_height() - 30
         height *= 3 / 4
         self.screen.blit(press_enter_text, (width, height))
         self.screen.blit(title_text, self._get_destination_for_text_header(
