@@ -1,3 +1,4 @@
+import saucer
 from main import Game
 from asteroid import Asteroid
 from bullet import Bullet
@@ -48,21 +49,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.draw_game, game.draw)
         self.assertEqual(game.handle_game_events, game.handle_events)
 
-        # def testRun(self):
-        #    game = Game()
-        #    init_count = game.count
-        #    game.game_over = False
-        #    game.run()
-        #    game.is_endless_cycle = False
-        #    pg.quit()
-        #
-        #    self.assertGreater(game.count, init_count)
-        #    game.count = game.level_info.asteroids_timing
-        #    game.run()
-        #    pg.quit()
-
-        # self.assertTrue(len(game.asteroids) > 0)
-
     def test_loop_object(self):
         game = Game()
         pos1 = m.Vector2(20, 20)
@@ -106,6 +92,40 @@ class TestGame(unittest.TestCase):
         self.assertEqual(m.Vector2(1, 0), asteroid.position)
         self.assertEqual(m.Vector2(400, 380), bullet.position)
         self.assertEqual(m.Vector2(1, 0), bonus.position)
+
+    def testInRun(self):
+        game = Game()
+        init_count = game.count
+        game.game_over = False
+        game.draw = game.draw_game
+        game.handle_events = game.handle_game_events
+        game.in_run()
+
+        self.assertGreater(game.count, init_count)
+        game.count = game.level_info.asteroids_timing - 1
+        game.in_run()
+        self.assertTrue(len(game.asteroids) > 0)
+
+        game.count = game.level_info.saucer_timing - 1
+        game.in_run()
+        self.assertTrue(len(game.saucers) > 0)
+
+        game.player.lives = 0
+        game.in_run()
+        self.assertTrue(self.game.game_over)
+
+    def testDrawGame(self):
+        s = saucer.Saucer(self.game)
+        self.game.saucers.append(s)
+        self.game.asteroids.append(Asteroid(self.game, 1))
+        self.game.player.bullets.append(Bullet(self.game.player))
+        s.bullets.append(Bullet(s))
+        self.game.draw_game()
+        self.assertEqual(self.game.elements_drawn, 5)
+
+    def testDrawScoreTable(self):
+        self.game.draw_score_table()
+        self.assertTrue(self.game.score_entries_drawn > 0)
 
 
 if __name__ == '__main__':

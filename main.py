@@ -42,25 +42,30 @@ class Game:
         self.player_name = ''
         self.double_score = 0
         self.level_info = LevelInfo(1, 1500, 0, 100, 1055, 1, 300, self)
+        self.elements_drawn = 0
+        self.score_entries_drawn = 0
 
     def run(self):
         pg.display.set_caption('Asteroids')
         while True:
-            self.clock.tick(60)
-            self.count += 1
-            if self.player.lives < 0 and not self.game_over:
-                self.end_game()
+            self.in_run()
 
-            if not self.game_over:
-                if self.count % self.level_info.asteroids_timing == 0:
-                    random_number = random.choice([1, 1, 1, 2, 2, 3])
-                    self.asteroids.append(Asteroid(self, random_number))
+    def in_run(self):
+        self.clock.tick(60)
+        self.count += 1
+        if self.player.lives < 0 and not self.game_over:
+            self.end_game()
 
-                if self.count % self.level_info.saucer_timing == 0:
-                    self.saucers.append(Saucer(self))
+        if not self.game_over:
+            if self.count % self.level_info.asteroids_timing == 0:
+                random_number = random.choice([1, 1, 1, 2, 2, 3])
+                self.asteroids.append(Asteroid(self, random_number))
 
-                self.handle_controls()
-                self.update()
+            if self.count % self.level_info.saucer_timing == 0:
+                self.saucers.append(Saucer(self))
+        try:
+            self.handle_controls()
+            self.update()
             self.handle_events()
             self.screen.fill((0, 0, 0))
             self.draw()
@@ -69,6 +74,9 @@ class Game:
             keys = pg.key.get_pressed()
             if keys[pg.K_ESCAPE]:
                 pg.quit()
+
+        except pygame.error as message:
+            pass
 
     def update(self):
         self.level_info.check_next_level(self.count)
@@ -111,39 +119,67 @@ class Game:
             self.double_score -= 1
 
     def draw_game(self):
-        score_text = self.font.render('Score: ' + str(self.score), True,
-                                      (255, 255, 255))
-        best_score_text = self.font.render(
-            'Best: ' + str(self.score_table.value), True,
-            (255, 255, 255))
-        lives_text = self.font.render('Lives: ' + str(self.player.lives), True,
-                                      (255, 255, 255))
-        level_text = self.font.render(
-            'Level ' + str(self.level_info.level_count), True,
-            (255, 255, 255))
-        self.screen.blit(score_text,
-                         (self.screen_width - 500,
-                          35 + score_text.get_height()))
-        self.screen.blit(best_score_text,
-                         (self.screen_width - 500,
-                          30))
-        self.screen.blit(level_text,
-                         (self.screen_width - 20 - level_text.get_width(),
-                          30))
-        self.screen.blit(lives_text,
-                         (20,
-                          30))
+        try:
+            score_text = self.font.render('Score: ' + str(self.score), True,
+                                          (255, 255, 255))
+            best_score_text = self.font.render(
+                'Best: ' + str(self.score_table.value), True,
+                (255, 255, 255))
+            lives_text = self.font.render('Lives: ' + str(self.player.lives),
+                                          True,
+                                          (255, 255, 255))
+            level_text = self.font.render(
+                'Level ' + str(self.level_info.level_count), True,
+                (255, 255, 255))
+            self.screen.blit(score_text,
+                             (self.screen_width - 500,
+                              35 + score_text.get_height()))
+            self.screen.blit(best_score_text,
+                             (self.screen_width - 500,
+                              30))
+            self.screen.blit(level_text,
+                             (self.screen_width - 20 - level_text.get_width(),
+                              30))
+            self.screen.blit(lives_text,
+                             (20,
+                              30))
+        except AttributeError or pygame.error as message:
+            pass
         for asteroid in self.asteroids:
-            asteroid.draw(self.screen)
+            try:
+                asteroid.draw(self.screen)
+            except AttributeError or pygame.error as message:
+                pass
+            self.elements_drawn += 1
         for bullet in self.player.bullets:
-            bullet.draw(self)
-        for saucer in self.saucers:
-            saucer.draw(self.screen)
-            for bullet in saucer.bullets:
+            try:
                 bullet.draw(self)
+            except AttributeError or pygame.error as message:
+                pass
+            self.elements_drawn += 1
+        for saucer in self.saucers:
+            try:
+                saucer.draw(self.screen)
+            except AttributeError or pygame.error as message:
+                pass
+            self.elements_drawn += 1
+            for bullet in saucer.bullets:
+                try:
+                    bullet.draw(self)
+                except AttributeError or pygame.error as message:
+                    pass
+                self.elements_drawn += 1
         for bonus in self.bonuses:
-            bonus.draw(self)
-        self.player.draw(self)
+            try:
+                bonus.draw(self)
+            except AttributeError or pygame.error as message:
+                pass
+            self.elements_drawn += 1
+        try:
+            self.player.draw(self)
+        except AttributeError or pygame.error as message:
+            pass
+        self.elements_drawn += 1
 
     def draw_death_screen(self):
         score_text = self.font.render('Score: ' + str(self.score), True,
@@ -200,28 +236,37 @@ class Game:
     def draw_score_table(self):
         vertical_spacing = 30
         horizontal_spacing = 100
-        press_enter_text = self.font.render('(Press ENTER to restart)', True,
-                                            (255, 255, 255))
+        try:
+            press_enter_text = self.font.render('(Press ENTER to restart)',
+                                                True, (255, 255, 255))
+        except pygame.error as message:
+            pass
         count = len(self.score_table.scores)
         for i in range(count):
             name = self.score_table.scores[i][0]
             score = str(self.score_table.scores[i][1])
-            name_text = self.font.render(name, True, (255, 255, 255))
-            score_text = self.font.render(score, True, (255, 255, 255))
-            entry_width = name_text.get_width() + score_text.get_width()
-            entry_width += horizontal_spacing
-            self.screen.blit(name_text,
-                             self._get_destination_for_text_next_entry(
-                                 entry_width, name_text.get_height(), i,
-                                 0, vertical_spacing))
-            self.screen.blit(score_text,
-                             self._get_destination_for_text_next_entry(
-                                 entry_width, name_text.get_height(), i,
-                                 horizontal_spacing, vertical_spacing))
-
-        width = self.screen_width / 2 - press_enter_text.get_width() / 2
-        height = self.screen_height - press_enter_text.get_height() - 30
-        self.screen.blit(press_enter_text, (width, height))
+            self.score_entries_drawn += 1
+            try:
+                name_text = self.font.render(name, True, (255, 255, 255))
+                score_text = self.font.render(score, True, (255, 255, 255))
+                entry_width = name_text.get_width() + score_text.get_width()
+                entry_width += horizontal_spacing
+                self.screen.blit(name_text,
+                                 self._get_destination_for_text_next_entry(
+                                     entry_width, name_text.get_height(), i,
+                                     0, vertical_spacing))
+                self.screen.blit(score_text,
+                                 self._get_destination_for_text_next_entry(
+                                     entry_width, name_text.get_height(), i,
+                                     horizontal_spacing, vertical_spacing))
+            except Exception or pygame.error as message:
+                pass
+        try:
+            width = self.screen_width / 2 - press_enter_text.get_width() / 2
+            height = self.screen_height - press_enter_text.get_height() - 30
+            self.screen.blit(press_enter_text, (width, height))
+        except Exception or pygame.error as message:
+            pass
 
     def draw_main_menu(self):
         title_text = self.title_font.render('Asteroids', True,

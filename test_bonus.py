@@ -54,6 +54,17 @@ class TestBonus(unittest.TestCase):
         self.bonus.score_bonus(self.game)
         self.assertGreater(self.game.double_score, init_score)
 
+    def testTypeToTexture(self):
+        texture = self.bonus.type_to_texture(
+            self.game, bonus.Bonus.life_bonus)
+        self.assertEqual(self.game.textures.life_bonus, texture)
+        texture = self.bonus.type_to_texture(
+            self.game, bonus.Bonus.shield_bonus)
+        self.assertEqual(self.game.textures.shield_bonus, texture)
+        texture = self.bonus.type_to_texture(
+            self.game, bonus.Bonus.score_bonus)
+        self.assertEqual(self.game.textures.score_bonus, texture)
+
 
 if __name__ == '__main__':
     unittest.main()
