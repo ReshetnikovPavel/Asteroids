@@ -6,6 +6,7 @@ import copy
 import pygame.math as pgm
 import pygame as pg
 import asteroid
+from bonus import Bonus
 from level_info import LevelInfo
 
 
@@ -24,6 +25,7 @@ class TextureForTest:
 class TexturesForTest:
     def __init__(self):
         self.player = pg.Surface((10, 10))
+        self.shielded_player = pg.Surface((10, 10))
         self.asteroids_medium = [pg.Surface((10, 10)),
                                  pg.Surface((10, 10)),
                                  pg.Surface((10, 10)),
@@ -41,6 +43,10 @@ class TexturesForTest:
                               pg.Surface((10, 10)),
                               pg.Surface((10, 10))]
 
+        self.shield_bonus = pg.Surface((10, 10))
+        self.score_bonus = pg.Surface((10, 10))
+        self.life_bonus = pg.Surface((10, 10))
+
 
 class TestPlayer(unittest.TestCase):
     class GameForTest:
@@ -56,12 +62,19 @@ class TestPlayer(unittest.TestCase):
             self.count = count
             self.asteroids = []
             self.level_info = LevelInfo(1, 1, 1, 1, 1, 1, 1, self)
+            self.score = 0
+            self.bonuses = []
+            self.player = player.Player(self)
+
+        @staticmethod
+        def get_score_multiplier():
+            return 1
 
     def setUp(self):
         self.game = self.GameForTest(800, 800,
                                      TexturesForTest(), Assets.Audio(),
                                      False, 0)
-        self.player = player.Player(self.game)
+        self.player = self.game.player
 
     def testTurnLeft(self):
         initial_angle = self.player.angle
@@ -142,6 +155,24 @@ class TestPlayer(unittest.TestCase):
         b.position = pgm.Vector2(100, 100)
         self.player.check_bullet_collision(self.game, b)
         self.assertEqual(self.player.lives, init_lives)
+
+    def testCheckBonusCollision(self):
+        init_score = self.game.score
+        bonus = Bonus(self.game, self.player.head, pgm.Vector2(1, 1))
+        self.game.bonuses.append(bonus)
+        self.player.check_bonus_collision(self.game, bonus)
+        self.assertGreater(self.game.score, init_score)
+        self.assertFalse(bonus in self.game.bonuses)
+
+    def testCheckUpdateTexture(self):
+        self.player.shield = 101
+        self.player.update_texture(self.game)
+        self.assertEqual(self.game.textures.shielded_player,
+                         self.player.texture)
+        self.player.shield = 0
+        self.player.update_texture(self.game)
+        self.assertEqual(self.game.textures.player,
+                         self.player.texture)
 
 
 if __name__ == '__main__':

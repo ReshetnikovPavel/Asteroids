@@ -28,13 +28,15 @@ class Bullet:
                or self.position.y < -50 or self.position.y > screen_height
 
     def draw(self, game):
-        if self.is_saucer:
-            color = (231, 76, 60)
-        elif game.double_score > 0:
-            color = (241, 196, 15)
-        else:
-            color = (255, 255, 255)
         pg.draw.rect(
             game.screen,
-            color,
+            self._get_color(game),
             [self.position.x, self.position.y, self.width, self.height])
+
+    def _get_color(self, game):
+        if self.is_saucer:
+            return 231, 76, 60
+        elif game.double_score > 0:
+            return 241, 196, 15
+        else:
+            return 255, 255, 255
